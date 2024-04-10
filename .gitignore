@@ -1,0 +1,7 @@
+.vscode/
+images/
+modules/
+
+main.py
+
+test*
