@@ -61,7 +61,7 @@ class LogsWindow(QtWidgets.QMainWindow):
         elif type == "stop":
             reason = "Session end"
 
-        btn = Button(self, f"{time.tm_hour:02}:{time.tm_min:02}:{time.tm_sec:02}  |  {reason}", 0, 0, 0, 0, objectName)
+        btn = Button(self, f"{time.tm_hour}:{time.tm_min:02}:{time.tm_sec:02}  |  {reason}", 0, 0, 0, 0, objectName)
         self.__vBox.addWidget(btn)
         self.__scrollArea.setWidget(self.__widget)
 
