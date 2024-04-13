@@ -55,6 +55,7 @@ CSS = '''
     #entry_standart {
         background-color: rgba(21, 21, 21, 1);
         border: 1px solid rgba(0, 65, 129, 1);
+        selection-background-color: rgba(0, 65, 129, 0.6);
     }
     
 

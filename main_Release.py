@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QMainWindow, QApplication
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon
-import sys
+import sys, os
 import time
 import threading
 
@@ -15,6 +15,7 @@ class MainWindow(QMainWindow):
     isFishing: bool = False
     tryCatchFish: bool = False
     startThisTry: float = 0
+    timeForTry: float = 22.0
 
     def __init__(self, title: str) -> None:
         QMainWindow.__init__(self)
@@ -38,9 +39,9 @@ class MainWindow(QMainWindow):
         self.logsWindow = LogsWindow(self)
 
         self.btn_start = Button(self, "START", 2, 2, 75, 26, "btn_standart", self.startFishing)
-        btn_close = Button(self, EXIT_ICON, self.width() - 30, 2, 26, 26, "btn_red", self.windowShouldClose)
-        btn_settings = Button(self, SETTING_ICON, self.width() - 60, 2, 26, 26, "btn_standart", self.openSettings)
-        btn_logs = Button(self, LOGS_ICON, self.width() - 90, 2, 26, 26, "btn_standart", self.openLogsWindow)
+        btn_close = Button(self, EXIT_ICON, self.width() - 28, 2, 26, 26, "btn_red", self.windowShouldClose)
+        btn_settings = Button(self, SETTING_ICON, self.width() - 56, 2, 26, 26, "btn_standart", self.openSettings)
+        btn_logs = Button(self, LOGS_ICON, self.width() - 84, 2, 26, 26, "btn_standart", self.openLogsWindow)
 
     def openSettings(self):
         if self.settingsWindow.isVisible():
@@ -73,6 +74,12 @@ class MainWindow(QMainWindow):
         self.settingsWindow.close()
         self.logsWindow.close()
         self.close()
+
+    def fishing(self):
+        time.sleep(2)
+        while self.isVisible():
+            print("fishing")
+            time.sleep(1)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
