@@ -24,7 +24,9 @@ class LogsWindow(QtWidgets.QMainWindow):
 
         windowTitle = WindowTitleBar(self)
         btn_close = Button(self, EXIT_ICON, self.width() - 28, 2, 26, 26, "btn_red", self.close)
+        btn_close.setToolTip("Close window")
         btn_clear = Button(self, "Clear", self.width() - 70, 2, 40, 26, "btn_standart", self.deleteLogs)
+        btn_clear.setToolTip("Clear history")
 
         self.__widget = QtWidgets.QWidget()
         self.__widget.setObjectName("widget")
