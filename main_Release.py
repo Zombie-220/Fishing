@@ -17,6 +17,7 @@ class MainWindow(QMainWindow):
     thisTryCatch: bool = False
     startThisTry: int = 0
     startTime: int = -1
+    logs: list = []
 
     def __init__(self, title: str) -> None:
         QMainWindow.__init__(self)
@@ -44,6 +45,11 @@ class MainWindow(QMainWindow):
         btn_settings = Button(self, SETTING_ICON, self.width() - 60, 2, 26, 26, "btn_standart", self.openSettings)
         btn_logs = Button(self, LOGS_ICON, self.width() - 90, 2, 26, 26, "btn_standart", self.openLogsWindow)
 
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.checkLogs)
+        self.timer.setInterval(500)
+        self.timer.start()
+
     def openSettings(self):
         if self.settingsWindow.isVisible():
             self.settingsWindow.hide()
@@ -63,7 +69,7 @@ class MainWindow(QMainWindow):
             self.btn_start.setText("STOP")
             self.isFishing = True
             self.startTime = time.time()
-            self.logsWindow.addLog(time.localtime(), "start")
+            self.logs.append([time.localtime(), "start"])
         else:
             self.btn_start.setObjectName("btn_standart")
             self.btn_start.setText("START")
@@ -71,13 +77,22 @@ class MainWindow(QMainWindow):
             self.tryCatchFish = False
             self.startTime = -1
             self.thisTryCatch = False
-            self.logsWindow.addLog(time.localtime(), "stop")
+            self.logs.append([time.localtime(), "stop"])
         self.btn_start.setStyleSheet(CSS)
 
     def windowShouldClose(self):
         self.settingsWindow.close()
         self.logsWindow.close()
         self.close()
+
+    def checkLogs(self):
+        if len(self.logs) != 0:
+            try:
+                for i in range(len(self.logs)):
+                    self.logsWindow.addLog(self.logs[i][0], self.logs[i][1])
+                    self.logs.pop(i)
+            except: pass
+        self.timer.start()
 
     def fishing(self):
         time.sleep(2)

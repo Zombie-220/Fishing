@@ -5,8 +5,6 @@ from modules.SimpleComponents import WindowTitleBar, Button, Entry, Label
 from modules.GlobalVariables import CSS, EXIT_ICON
 
 class SettingsWindow(QtWidgets.QMainWindow):
-    isMeasuring: bool = False
-
     def __init__(self, parent: MainWindow):
         QtWidgets.QWidget.__init__(self)
 
