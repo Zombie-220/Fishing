@@ -14,10 +14,7 @@ class MainWindow(QMainWindow):
     title: str = "title"
     isFishing: bool = False
     tryCatchFish: bool = False
-    thisTryCatch: bool = False
-    startThisTry: int = 0
-    startTime: int = -1
-    logs: list = []
+    startThisTry: float = 0
 
     def __init__(self, title: str) -> None:
         QMainWindow.__init__(self)
@@ -45,11 +42,6 @@ class MainWindow(QMainWindow):
         btn_settings = Button(self, SETTING_ICON, self.width() - 60, 2, 26, 26, "btn_standart", self.openSettings)
         btn_logs = Button(self, LOGS_ICON, self.width() - 90, 2, 26, 26, "btn_standart", self.openLogsWindow)
 
-        self.timer = QtCore.QTimer(self)
-        self.timer.timeout.connect(self.checkLogs)
-        self.timer.setInterval(500)
-        self.timer.start()
-
     def openSettings(self):
         if self.settingsWindow.isVisible():
             self.settingsWindow.hide()
@@ -68,16 +60,13 @@ class MainWindow(QMainWindow):
             self.btn_start.setObjectName("btn_stop")
             self.btn_start.setText("STOP")
             self.isFishing = True
-            self.startTime = time.time()
-            self.logs.append([time.localtime(), "start"])
+            self.logsWindow.logs.append([time.localtime(), "start"])
         else:
             self.btn_start.setObjectName("btn_standart")
             self.btn_start.setText("START")
             self.isFishing = False
             self.tryCatchFish = False
-            self.startTime = -1
-            self.thisTryCatch = False
-            self.logs.append([time.localtime(), "stop"])
+            self.logsWindow.logs.append([time.localtime(), "stop"])
         self.btn_start.setStyleSheet(CSS)
 
     def windowShouldClose(self):
@@ -85,28 +74,9 @@ class MainWindow(QMainWindow):
         self.logsWindow.close()
         self.close()
 
-    def checkLogs(self):
-        if len(self.logs) != 0:
-            try:
-                for i in range(len(self.logs)):
-                    self.logsWindow.addLog(self.logs[i][0], self.logs[i][1])
-                    self.logs.pop(i)
-            except: pass
-        self.timer.start()
-
-    def fishing(self):
-        time.sleep(2)
-        # your fishing script
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     screenSize = app.primaryScreen().geometry()
     window = MainWindow("Auto fishing")
     window.show()
     sys.exit(app.exec())
-
-    # Release
-#  pyinstaller -w -F -i"images\icons\APP_ICON.ico" main.py
-
-    # Debuging
-#  pyinstaller -F -i"images\icons\APP_ICON.ico" main.py

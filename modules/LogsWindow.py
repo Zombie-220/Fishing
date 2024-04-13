@@ -6,10 +6,12 @@ from modules.SimpleComponents import WindowTitleBar, Button
 from modules.header import MainWindow
 
 class LogsWindow(QtWidgets.QMainWindow):
+    logs: list = []
+
     def __init__(self, parent: MainWindow):
         QtWidgets.QMainWindow.__init__(self)
 
-        self.title = "Logs"
+        self.title = "AF  |  Logs"
         self.icon = parent.icon
 
         self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint | QtCore.Qt.WindowType.WindowStaysOnTopHint)
@@ -22,6 +24,7 @@ class LogsWindow(QtWidgets.QMainWindow):
 
         windowTitle = WindowTitleBar(self)
         btn_close = Button(self, EXIT_ICON, self.width() - 30, 2, 26, 26, "btn_red", self.close)
+        # btn_clear = Button(self, "Clear", self.width() - 75, 2, 40, 26, "btn_standart", self.clearArea)
 
         self.__widget = QtWidgets.QWidget()
         self.__widget.setObjectName("widget")
@@ -35,6 +38,11 @@ class LogsWindow(QtWidgets.QMainWindow):
         self.__scrollArea.setObjectName("scrollArea")
         self.__scrollArea.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.__scrollArea.setWidgetResizable(True)
+
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.checkLogs)
+        self.timer.setInterval(500)
+        self.timer.start()
 
     def addLog(self, time: struct_time, type: str):
         objectName = f"btn_{type}_log"
@@ -54,3 +62,21 @@ class LogsWindow(QtWidgets.QMainWindow):
         btn = Button(self, f"{time.tm_hour:02}:{time.tm_min:02}:{time.tm_sec:02}  |  {reason}", 0, 0, 0, 0, objectName)
         self.__vBox.addWidget(btn)
         self.__scrollArea.setWidget(self.__widget)
+
+    def checkLogs(self):
+        if len(self.logs) != 0:
+            try:
+                for i in range(len(self.logs)):
+                    self.addLog(self.logs[i][0], self.logs[i][1])
+                    self.logs.pop(i)
+            except: pass
+        self.timer.start()
+
+    def clearArea(self):
+        print("X")
+        while self.__vBox.itemAt(0):
+            self.__vBox.removeItem(self.__vBox.itemAt(0))
+
+        self.__widget.setLayout(self.__vBox)
+        self.__scrollArea.setWidget(self.__widget)
+        print("X")
