@@ -7,6 +7,4 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
 
-    def windowShouldClose(self):
-        pass
-    
+    def windowShouldClose(self): pass

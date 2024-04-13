@@ -23,8 +23,8 @@ class LogsWindow(QtWidgets.QMainWindow):
         self.setStyleSheet(CSS)
 
         windowTitle = WindowTitleBar(self)
-        btn_close = Button(self, EXIT_ICON, self.width() - 30, 2, 26, 26, "btn_red", self.close)
-        # btn_clear = Button(self, "Clear", self.width() - 75, 2, 40, 26, "btn_standart", self.clearArea)
+        btn_close = Button(self, EXIT_ICON, self.width() - 28, 2, 26, 26, "btn_red", self.close)
+        btn_clear = Button(self, "Clear", self.width() - 70, 2, 40, 26, "btn_standart", self.deleteLogs)
 
         self.__widget = QtWidgets.QWidget()
         self.__widget.setObjectName("widget")
@@ -72,11 +72,6 @@ class LogsWindow(QtWidgets.QMainWindow):
             except: pass
         self.timer.start()
 
-    def clearArea(self):
-        print("X")
+    def deleteLogs(self):
         while self.__vBox.itemAt(0):
-            self.__vBox.removeItem(self.__vBox.itemAt(0))
-
-        self.__widget.setLayout(self.__vBox)
-        self.__scrollArea.setWidget(self.__widget)
-        print("X")
+            self.__vBox.removeWidget(self.__vBox.itemAt(0).widget())

@@ -65,15 +65,15 @@ class WindowTitleBar(QtWidgets.QLabel):
         self.icon = parent.icon
 
         self.parent = parent
-        self.resize(parent.width(), 32)
+        self.resize(parent.width(), 30)
         self.move(0,0)
         self.setObjectName("TitleBar")
 
         labelLogo = QtWidgets.QLabel(self)
         labelLogo.setPixmap(self.icon)
-        labelLogo.setFixedSize(35,32)
+        labelLogo.setFixedSize(30,30)
         labelName = QtWidgets.QLabel(parent.title, self)
-        labelName.setGeometry(35, 0, parent.width(), 35)
+        labelName.setGeometry(35, 0, parent.width(), 30)
 
     def mousePressEvent(self, LeftButton) -> None:
         self.pos = LeftButton.pos()
