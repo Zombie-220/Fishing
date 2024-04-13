@@ -21,9 +21,12 @@ CSS = '''
         background-color: rgba(0,0,0,0);
     }
 
-    #MainWindow, #TitleBar, #Window, #btn_fish_log, #btn_junk_log {
+    #MainWindow, #TitleBar, #Window, QToolTip, #btn_fish_log, #btn_junk_log {
         background-color: rgb(21, 21, 21);
         border: 1px solid rgb(145, 145, 145)
+    }
+    QToolTip {
+        font-size: 12px;
     }
 
     
