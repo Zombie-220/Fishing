@@ -1,6 +1,6 @@
 # Auto fishing for Roblox Arcane Odyssey
 
-## How to install it
+### How to install it
 Go to the desired folder using the console
 Download the repository
 ```sh
@@ -12,10 +12,18 @@ Here is the main.exe file we need. let's launch it
 main.exe
 ```
 
-## What does this application do
+### What does this application do
 The application is designed for automatic fishing in Roblox Arcane Odyssey
 
 ---
 
-## coming soon
-I'm too lazy to write everything now...
+### What is included in the program
+Main window - this is a main window
+![Main window image](images/forMD/mainWindowIMG.png)
+
+History window - allows you to monitor all program actions
+![History window](images/forMD/logsWindowIMG.png)
+
+Setting window - allows you to customize the keys for fishing rod, food and potion
+![Settings window](images/forMD/settingsWindowIMG.png)
+
