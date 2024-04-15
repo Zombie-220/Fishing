@@ -88,4 +88,8 @@ CSS = '''
         background-color: rgb(12, 15, 22);
         border: 1px solid rgb(67, 67, 178);
     }
+    #btn_timeError_log {
+        background-color: rgb(41, 9, 41);
+        border: 1px solid rgb(127, 0, 127);
+    }
 '''
