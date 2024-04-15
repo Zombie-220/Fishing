@@ -13,8 +13,6 @@ cd Fishing/dist
 Here is the main.exe file we need. let's launch it
 
 ```sh
-
-```sh
 main.exe
 ```
 
