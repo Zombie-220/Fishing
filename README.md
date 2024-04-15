@@ -5,14 +5,21 @@ Go to the desired folder using the console
 Download the repository
 
 ```sh
+
+```sh
 git clone https://github.com/Zombie-220/Fishing.git
 cd Fishing/dist
+```
+
 ```
 
 Here is the main.exe file we need. let's launch it
 
 ```sh
+
+```sh
 main.exe
+```
 ```
 
 ## What does this application do
