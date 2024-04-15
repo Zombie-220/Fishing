@@ -17,15 +17,5 @@ The application is designed for automatic fishing in Roblox Arcane Odyssey
 
 ---
 
-## What is included in the application
-Main window
-![Main wondow](images/forMD/mainWindowIMG.png)
-Logs window
-![Logs window](images/forMD/logsWindowIMG.png)
-Setting window
-![Setting window](images/forMD/settingsWindowIMG.png)
-
----
-
 ## coming soon
 I'm too lazy to write everything now...
