@@ -15,7 +15,9 @@ class MainWindow(QMainWindow):
     isFishing: bool = False
     tryCatchFish: bool = False
     startThisTry: float = 0
-    timeForTry: float = 22.0
+    timeForTry: float = 20
+    maxTimeForWait: float = 70
+    startWait: float = 0
 
     def __init__(self, title: str) -> None:
         QMainWindow.__init__(self)
@@ -32,8 +34,7 @@ class MainWindow(QMainWindow):
         self.move((screenSize.width() // 2) - (self.width() // 2), 0)
         self.setStyleSheet(CSS)
 
-        fishingThread = threading.Thread(target = self.fishing)
-        fishingThread.start()
+        self.fishingThread = threading.Thread(target = self.fishing)
 
         self.settingsWindow = SettingsWindow(self)
         self.logsWindow = LogsWindow(self)
@@ -61,6 +62,7 @@ class MainWindow(QMainWindow):
             self.btn_start.setObjectName("btn_stop")
             self.btn_start.setText("STOP")
             self.isFishing = True
+            self.startWait = time.time()
             self.logsWindow.logs.append([time.localtime(), "start"])
         else:
             self.btn_start.setObjectName("btn_standart")
@@ -86,4 +88,5 @@ if __name__ == "__main__":
     screenSize = app.primaryScreen().geometry()
     window = MainWindow("Auto fishing")
     window.show()
+    window.fishingThread.start()
     sys.exit(app.exec())
