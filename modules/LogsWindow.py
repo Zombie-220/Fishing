@@ -40,22 +40,24 @@ class LogsWindow(QtWidgets.QMainWindow):
         self.__scrollArea.setObjectName("scrollArea")
         self.__scrollArea.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.__scrollArea.setWidgetResizable(True)
+        self.__scrollArea.verticalScrollBar().rangeChanged.connect(self.scrollToBottom)
 
         self.timer = QtCore.QTimer(self)
         self.timer.timeout.connect(self.checkLogs)
         self.timer.setInterval(500)
         self.timer.start()
 
+    def scrollToBottom(self, min, max):
+        self.__scrollArea.verticalScrollBar().setValue(max)
+
     def addLog(self, time: struct_time, reasonType: str):
         objectName = f"btn_{reasonType}_log"
-        if reasonType == "fish" or reasonType == "junk":
+        if reasonType == "fish":
             reason = "Fish caught"
         elif reasonType == "sunken":
             reason = "Sunken treasure caught"
         elif reasonType == "treasure":
             reason = "Treasure caught"
-        elif reasonType == "timeOut":
-            reason = "Attempt timed out"
         elif reasonType == "start":
             reason = "Session start"
         elif reasonType == "stop":
@@ -69,11 +71,8 @@ class LogsWindow(QtWidgets.QMainWindow):
 
     def checkLogs(self):
         if len(self.logs) != 0:
-            try:
-                for i in range(len(self.logs)):
-                    self.addLog(self.logs[i][0], self.logs[i][1])
-                    self.logs.pop(i)
-            except: pass
+            self.addLog(self.logs[0][0], self.logs[0][1])
+            self.logs.pop(0)
         self.timer.start()
 
     def deleteLogs(self):

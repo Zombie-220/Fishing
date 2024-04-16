@@ -21,7 +21,7 @@ CSS = '''
         background-color: rgba(0,0,0,0);
     }
 
-    #MainWindow, #TitleBar, #Window, QToolTip, #btn_fish_log, #btn_junk_log {
+    #MainWindow, #TitleBar, #Window, QToolTip, #btn_fish_log {
         background-color: rgb(21, 21, 21);
         border: 1px solid rgb(145, 145, 145)
     }
@@ -41,7 +41,7 @@ CSS = '''
         background-color: rgba(0, 65, 129, 0.5);
     }
 
-    #btn_red, #btn_stop_log, #btn_stop, #btn_timeOut_log {
+    #btn_red, #btn_stop_log, #btn_stop {
         background-color: rgba(57, 21, 21, 1);
         border: 1px solid rgb(145, 0, 0);
     }
