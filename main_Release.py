@@ -40,9 +40,13 @@ class MainWindow(QMainWindow):
         self.logsWindow = LogsWindow(self)
 
         self.btn_start = Button(self, "START", 2, 2, 75, 26, "btn_standart", self.startFishing)
+        self.btn_start.setToolTip("Start fishing")
         btn_close = Button(self, EXIT_ICON, self.width() - 28, 2, 26, 26, "btn_red", self.windowShouldClose)
+        btn_close.setToolTip("Start fishing")
         btn_settings = Button(self, SETTING_ICON, self.width() - 56, 2, 26, 26, "btn_standart", self.openSettings)
+        btn_settings.setToolTip("Settings window")
         btn_logs = Button(self, LOGS_ICON, self.width() - 84, 2, 26, 26, "btn_standart", self.openLogsWindow)
+        btn_logs.setToolTip("History window")
 
     def openSettings(self):
         if self.settingsWindow.isVisible():
@@ -61,12 +65,14 @@ class MainWindow(QMainWindow):
         if self.isFishing:
             self.btn_start.setObjectName("btn_stop")
             self.btn_start.setText("STOP")
+            self.btn_start.setToolTip("Stop fishing")
             self.isFishing = True
             self.startWait = time.time()
             self.logsWindow.logs.append([time.localtime(), "start"])
         else:
             self.btn_start.setObjectName("btn_standart")
             self.btn_start.setText("START")
+            self.btn_start.setToolTip("Start fishing")
             self.isFishing = False
             self.tryCatchFish = False
             self.logsWindow.logs.append([time.localtime(), "stop"])
@@ -80,8 +86,9 @@ class MainWindow(QMainWindow):
     def fishing(self):
         time.sleep(2)
         while self.isVisible():
-            print("fishing")
-            time.sleep(1)
+            if self.isFishing:
+                print("fishing")
+                time.sleep(1)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
