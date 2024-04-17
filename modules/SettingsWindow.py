@@ -10,6 +10,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
     rodKey: int = 0
     mealKey: int = 9
     potionKey: int = 8
+    useMeal: bool = False
+    usePotion: bool = False
 
     def __init__(self, parent: MainWindow):
         QtWidgets.QWidget.__init__(self)
@@ -20,8 +22,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.setWindowFlags(QtCore.Qt.WindowType.FramelessWindowHint | QtCore.Qt.WindowType.WindowStaysOnTopHint)
         self.setWindowTitle(self.title)
         self.setWindowIcon(QtGui.QIcon(self.icon))
-        self.setFixedSize(300, 175)
-        self.move(parent.pos().x() - 50, parent.height() + 10)
+        self.setFixedSize(350, 175)
+        self.move(parent.pos().x() - 60, parent.height() + 10)
         self.setObjectName("Window")
         self.setStyleSheet(CSS)
 
@@ -37,27 +39,54 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
         grid = QtWidgets.QGridLayout()
         label = QtWidgets.QLabel(self)
+        grid.setColumnMinimumWidth(1, 100)
+
+        label_rodKey = Label(self, 0, 0, 0, 0, "label", "Rod key")
+        label_rodKey.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)    
+        self.__entry_rodKey = Entry(self, 0, 0, 0, 0, f"0-9, default is {self.rodKey}", False, "entry_standart")
+        grid.addWidget(label_rodKey, 0, 0)
+        grid.addWidget(self.__entry_rodKey, 0, 1, 1, 2)
+
+        label_mealKey = Label(self, 0, 0, 0, 0, "label", "Meal key")
+        label_mealKey.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.__button_useMeal = Button(self, "Use meal", 0, 0, 0, 0, "btn_red", self.changeMealFlag)
+        self.__entry_mealKey = Entry(self, 0, 0, 0, 0, f"0-9, default is {self.mealKey}", False, "entry_standart")
+        grid.addWidget(label_mealKey, 1, 0)
+        grid.addWidget(self.__button_useMeal, 1, 1)
+        grid.addWidget(self.__entry_mealKey, 1, 2)
+
+        label_potionKey = Label(self, 0, 0, 0, 0, "lable", "Potion key")
+        label_potionKey.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.__button_usePotion = Button(self, "Use potion", 0, 0, 0, 0, "btn_red", self.changePotionFlag)
+        self.__entry_potionKey = Entry(self, 0, 0, 0, 0, f"0-9, default is {self.potionKey}", False, "entry_standart")
+        grid.addWidget(label_potionKey, 2, 0)
+        grid.addWidget(self.__button_usePotion, 2, 1)
+        grid.addWidget(self.__entry_potionKey, 2, 2)
+
+        self.__entry_potionDuration = Entry(self, 0, 0, 0, 0, "potion duration", False, "entry_standart")
+        grid.addWidget(self.__entry_potionDuration, 3, 0, 1, 3)
+
         label.setFixedSize(self.width() - 4, self.height() - 34)
         label.move(2, 32)
         label.setLayout(grid)
 
-        label_rodKey = Label(self, 25, 45, 100, 30, "label", "Rod key")
-        label_rodKey.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)    
-        self.__entry_rodKey = Entry(self, self.width() - 160, 40, 140, 30, f"0-9, default is {self.rodKey}", False, "entry_standart")
-        grid.addWidget(label_rodKey, 0, 0)
-        grid.addWidget(self.__entry_rodKey, 0, 1)
+    def changeMealFlag(self):
+        self.useMeal = not self.useMeal
+        if self.useMeal:
+            self.__button_useMeal.setObjectName("btn_standart")
+        else:
+            self.__button_useMeal.setObjectName("btn_red")
+        self.setStyleSheet(CSS)
+        print(self.useMeal)
 
-        label_mealKey = Label(self, 25, 90, 100, 30, "label", "Meal key")
-        label_mealKey.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-        self.__entry_mealKey = Entry(self, self.width() - 160, 85, 140, 30, f"0-9, default is {self.mealKey}", False, "entry_standart")
-        grid.addWidget(label_mealKey, 1, 0)
-        grid.addWidget(self.__entry_mealKey, 1, 1)
-
-        label_potionKey = Label(self, 25, 135, 100, 30, "lable", "Potion key")
-        label_potionKey.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
-        self.__entry_potionKey = Entry(self, self.width() - 160, 130, 140, 30, f"0-9, default is {self.potionKey}", False, "entry_standart")
-        grid.addWidget(label_potionKey, 2, 0)
-        grid.addWidget(self.__entry_potionKey, 2, 1)
+    def changePotionFlag(self):
+        self.usePotion = not self.usePotion
+        if self.usePotion:
+            self.__button_usePotion.setObjectName("btn_standart")
+        else:
+            self.__button_usePotion.setObjectName("btn_red")
+        self.setStyleSheet(CSS)
+        print(self.usePotion)
 
     def clearEntrys(self):
         self.__entry_rodKey.clear()
