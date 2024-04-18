@@ -57,6 +57,11 @@ CSS = '''
         border: 1px solid rgba(0, 65, 129, 1);
         selection-background-color: rgba(0, 65, 129, 0.6);
     }
+    #entry_red {
+        background-color: rgba(21, 21, 21, 1);
+        border: 1px solid rgb(145, 0, 0);
+        selection-background-color: rgba(145, 0, 0, 0.6);
+    }
     
 
     #scrollArea {
