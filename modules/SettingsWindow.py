@@ -14,6 +14,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
     usePotion: bool = False
     potionDuration: int = 10
 
+    allOK: bool = True
+
     def __init__(self, parent: MainWindow):
         QtWidgets.QWidget.__init__(self)
 
@@ -98,97 +100,77 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.setStyleSheet(CSS)
         self.close()
 
-    def saveChanges(self):
+    def checkEntry(self, variable, entry: Entry):
         possibleNumbers = [1,2,3,4,5,6,7,8,9,0]
 
-        newRodKey = self.__entry_rodKey.text()
+        newVariable = entry.text()
         try:
-            newRodKey = int(newRodKey)
-            if newRodKey not in possibleNumbers:
-                self.__entry_rodKey.setObjectName("entry_red")
+            newVariable = int(newVariable)
+            if newVariable not in possibleNumbers:
+                entry.setObjectName("entry_red")
                 self.setStyleSheet(CSS)
-                newRodKey = self.rodKey
-                return
+                newVariable = variable
+                allOK = False
+                return newVariable, allOK
         except:
-            if newRodKey == "": newRodKey = self.rodKey
+            if newVariable == "":
+                newVariable = variable
             else:
-                self.__entry_rodKey.setObjectName("entry_red")
+                entry.setObjectName("entry_red")
                 self.setStyleSheet(CSS)
-                newRodKey = self.rodKey
-                return
-        self.__entry_rodKey.setObjectName("entry_standart")
+                newVariable = variable
+                allOK = False
+                return newVariable, allOK
+            
+        entry.setObjectName("entry_standart")
         self.setStyleSheet(CSS)
+        variable = newVariable
+        entry.setPlaceholderText(f"0-9, default is {variable}")
+        allOK = True
+        return variable, allOK
 
-        newMealKey = self.__entry_mealKey.text()
-        try:
-            newMealKey = int(newMealKey)
-            if newMealKey not in possibleNumbers:
-                self.__entry_mealKey.setObjectName("entry_red")
-                self.setStyleSheet(CSS)
-                newMealKey = self.mealKey
-                return
-        except:
-            if newMealKey == "": newMealKey = self.mealKey
-            else:
-                self.__entry_mealKey.setObjectName("entry_red")
-                self.setStyleSheet(CSS)
-                newMealKey = self.mealKey
-                return
-        self.__entry_mealKey.setObjectName("entry_standart")
-        self.setStyleSheet(CSS)
+    def saveChanges(self):
 
-        newPotionKey = self.__entry_potionKey.text()
-        try:
-            newPotionKey = int(newPotionKey)
-            if newPotionKey not in possibleNumbers:
-                self.__entry_potionKey.setObjectName("entry_red")
-                self.setStyleSheet(CSS)
-                newPotionKey = self.potionKey
-                return
-        except:
-            if newPotionKey == "": newPotionKey = self.potionKey
-            else:
-                self.__entry_potionKey.setObjectName("entry_red")
-                self.setStyleSheet(CSS)
-                newPotionKey = self.potionKey
-                return
-        self.__entry_potionKey.setObjectName("entry_standart")
-        self.setStyleSheet(CSS)
+        check1 = self.checkEntry(self.rodKey, self.__entry_rodKey)
+        check2 = self.checkEntry(self.mealKey, self.__entry_mealKey)
+        check3 = self.checkEntry(self.potionKey, self.__entry_potionKey)
+
+        self.rodKey = check1[0]
+        self.mealKey = check2[0]
+        self.potionKey = check3[0]
 
         newPotionDuration = self.__entry_potionDuration.text()
         try: newPotionDuration = int(newPotionDuration)
         except:
-            if newPotionDuration == "": newPotionDuration = self.potionDuration
+            if newPotionDuration == "":
+                newPotionDuration = self.potionDuration
+                self.allOK = True
             else:
                 self.__entry_potionDuration.setObjectName("entry_red")
                 self.setStyleSheet(CSS)
                 newPotionDuration = self.potionDuration
+                self.allOK = False
                 return
         self.__entry_potionDuration.setObjectName("entry_standart")
         self.setStyleSheet(CSS)
-        
-        self.rodKey = newRodKey
-        self.__entry_rodKey.setPlaceholderText(f"0-9, default is {self.rodKey}")
-        self.mealKey = newMealKey
-        self.__entry_mealKey.setPlaceholderText(f"0-9, default is {self.mealKey}")
-        self.potionKey = newPotionKey
-        self.__entry_potionKey.setPlaceholderText(f"0-9, default is {self.potionKey}")
+
         self.potionDuration = newPotionDuration
         self.__entry_potionDuration.setPlaceholderText(f"{self.potionDuration} seconds")
+        
+        if self.allOK and check1[1] and check2[1] and check3[1]:
+            self.clearEntrys()
 
-        self.clearEntrys()
+            newDBobject = {
+                "rodKey": self.rodKey,
+                "mealKey": self.mealKey,
+                "potionKey": self.potionKey,
+                "useMeal": self.useMeal,
+                "usePotion": self.usePotion,
+                "potionDuration": self.potionDuration
+            }
 
-        newDBobject = {
-            "rodKey": self.rodKey,
-            "mealKey": self.mealKey,
-            "potionKey": self.potionKey,
-            "useMeal": self.useMeal,
-            "usePotion": self.usePotion,
-            "potionDuration": self.potionDuration
-        }
-
-        with open('DB.json', 'w') as file:
-            json.dump(newDBobject, file)
+            with open('DB.json', 'w') as file:
+                json.dump(newDBobject, file)
 
     def readDataBase(self):
         file = open("DB.json", "r")
