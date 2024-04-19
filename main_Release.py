@@ -15,9 +15,11 @@ class MainWindow(QMainWindow):
     isFishing: bool = False
     tryCatchFish: bool = False
     startThisTry: float = 0
-    timeForTry: float = 20
-    maxTimeForWait: float = 70
-    startWait: float = 0
+    timeForTry: int = 20
+    maxTimeForWait: int = 70
+    startFishingTimer: float = 0
+    startCheckTimer: float = 0
+    checkTimer: int = 0
 
     def __init__(self, title: str) -> None:
         QMainWindow.__init__(self)
@@ -67,7 +69,8 @@ class MainWindow(QMainWindow):
             self.btn_start.setText("STOP")
             self.btn_start.setToolTip("Stop fishing")
             self.isFishing = True
-            self.startWait = time.time()
+            self.startFishingTimer = time.time()
+            self.startCheckTimer = time.time()
             self.logsWindow.logs.append([time.localtime(), "start"])
         else:
             self.btn_start.setObjectName("btn_standart")
