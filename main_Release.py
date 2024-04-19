@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
     tryCatchFish: bool = False
     startThisTry: float = 0
     timeForTry: float = 20
-    maxTimeForWait: float = 70
+    maxTimeForWait: float = 5
     startWait: float = 0
 
     def __init__(self, title: str) -> None:
@@ -42,7 +42,7 @@ class MainWindow(QMainWindow):
         self.btn_start = Button(self, "START", 2, 2, 75, 26, "btn_standart", self.startFishing)
         self.btn_start.setToolTip("Start fishing")
         btn_close = Button(self, EXIT_ICON, self.width() - 28, 2, 26, 26, "btn_red", self.windowShouldClose)
-        btn_close.setToolTip("Start fishing")
+        btn_close.setToolTip("Close window")
         btn_settings = Button(self, SETTING_ICON, self.width() - 56, 2, 26, 26, "btn_standart", self.openSettings)
         btn_settings.setToolTip("Settings window")
         btn_logs = Button(self, LOGS_ICON, self.width() - 84, 2, 26, 26, "btn_standart", self.openLogsWindow)
@@ -76,7 +76,7 @@ class MainWindow(QMainWindow):
             self.isFishing = False
             self.tryCatchFish = False
             self.logsWindow.logs.append([time.localtime(), "stop"])
-        self.btn_start.setStyleSheet(CSS)
+        self.setStyleSheet(CSS)
 
     def windowShouldClose(self):
         self.settingsWindow.close()
