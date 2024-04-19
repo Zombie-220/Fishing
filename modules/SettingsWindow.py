@@ -4,7 +4,7 @@ from modules.header import MainWindow
 from modules.SimpleComponents import WindowTitleBar, Button, Entry, Label
 from modules.GlobalVariables import CSS, EXIT_ICON
 
-import os, sys, json
+import json
 
 class SettingsWindow(QtWidgets.QMainWindow):
     rodKey: int = 0
@@ -12,7 +12,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
     potionKey: int = 8
     useMeal: bool = False
     usePotion: bool = False
-    potionDuration: int = 10
+    potionDuration: int = 300
 
     allOK: bool = True
 

@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
     tryCatchFish: bool = False
     startThisTry: float = 0
     timeForTry: float = 20
-    maxTimeForWait: float = 5
+    maxTimeForWait: float = 70
     startWait: float = 0
 
     def __init__(self, title: str) -> None:
