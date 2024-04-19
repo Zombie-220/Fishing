@@ -12,7 +12,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
     potionKey: int = 8
     useMeal: bool = False
     usePotion: bool = False
-    potionDuration: int = 300
+    checkTime: int = 300
 
     allOK: bool = True
 
@@ -64,7 +64,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         grid.addWidget(self.__button_usePotion, 2, 1)
         grid.addWidget(self.__entry_potionKey, 2, 2)
 
-        label_potionDuration = Label(self, 0, 0, 0, 0, "label", "Potion duration")
+        label_potionDuration = Label(self, 0, 0, 0, 0, "label", "Eat | drink timer")
         self.__entry_potionDuration = Entry(self, 0, 0, 0, 0, "EMPTY", False, "entry_standart")
         grid.addWidget(label_potionDuration, 3, 0)
         grid.addWidget(self.__entry_potionDuration, 3, 1, 1, 2)
@@ -143,19 +143,19 @@ class SettingsWindow(QtWidgets.QMainWindow):
         try: newPotionDuration = int(newPotionDuration)
         except:
             if newPotionDuration == "":
-                newPotionDuration = self.potionDuration
+                newPotionDuration = self.checkTime
                 self.allOK = True
             else:
                 self.__entry_potionDuration.setObjectName("entry_red")
                 self.setStyleSheet(CSS)
-                newPotionDuration = self.potionDuration
+                newPotionDuration = self.checkTime
                 self.allOK = False
                 return
         self.__entry_potionDuration.setObjectName("entry_standart")
         self.setStyleSheet(CSS)
 
-        self.potionDuration = newPotionDuration
-        self.__entry_potionDuration.setPlaceholderText(f"{self.potionDuration} seconds")
+        self.checkTime = newPotionDuration
+        self.__entry_potionDuration.setPlaceholderText(f"{self.checkTime} seconds")
         
         if self.allOK and check1[1] and check2[1] and check3[1]:
             self.clearEntrys()
@@ -166,7 +166,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
                 "potionKey": self.potionKey,
                 "useMeal": self.useMeal,
                 "usePotion": self.usePotion,
-                "potionDuration": self.potionDuration
+                "checkTime": self.checkTime
             }
 
             with open('DB.json', 'w') as file:
@@ -188,5 +188,5 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.usePotion = data["usePotion"]
         if self.usePotion:
             self.__button_usePotion.setObjectName("btn_standart")
-        self.potionDuration = data["potionDuration"]
-        self.__entry_potionDuration.setPlaceholderText(f"{self.potionDuration} seconds")
+        self.checkTime = data["checkTime"]
+        self.__entry_potionDuration.setPlaceholderText(f"{self.checkTime} seconds")
