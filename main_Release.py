@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QMainWindow, QApplication
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QIcon
 import sys, os
 import time
@@ -10,16 +10,21 @@ from modules.GlobalVariables import *
 from modules.SettingsWindow import SettingsWindow
 from modules.LogsWindow import LogsWindow
 
+# Ha-ha
+# while I was writing the program I spent 10 days and caught only two sunken treasures (i caught 5000+ fish)
+# but i got Expert Angler title, hah
+
 class MainWindow(QMainWindow):
     title: str = "title"
     isFishing: bool = False
     tryCatchFish: bool = False
     startThisTry: float = 0
-    timeForTry: int = 20
+    timeForTry: int = 30
     maxTimeForWait: int = 70
     startFishingTimer: float = 0
     startCheckTimer: float = 0
     checkTimer: int = 0
+    shouldStopFishing: bool = False
 
     def __init__(self, title: str) -> None:
         QMainWindow.__init__(self)
@@ -50,6 +55,11 @@ class MainWindow(QMainWindow):
         btn_logs = Button(self, LOGS_ICON, self.width() - 84, 2, 26, 26, "btn_standart", self.openLogsWindow)
         btn_logs.setToolTip("History window")
 
+        self.ShouldStopFishingTimer = QTimer(self)
+        self.ShouldStopFishingTimer.setInterval(500)
+        self.ShouldStopFishingTimer.timeout.connect(self.checkShouldStopFishing)
+        self.ShouldStopFishingTimer.start()
+
     def openSettings(self):
         if self.settingsWindow.isVisible():
             self.settingsWindow.hide()
@@ -65,21 +75,28 @@ class MainWindow(QMainWindow):
     def startFishing(self):
         self.isFishing = not (self.isFishing)
         if self.isFishing:
-            self.btn_start.setObjectName("btn_stop")
+            self.btn_start.setObjectName("btn_red")
             self.btn_start.setText("STOP")
             self.btn_start.setToolTip("Stop fishing")
             self.isFishing = True
             self.startFishingTimer = time.time()
             self.startCheckTimer = time.time()
             self.logsWindow.logs.append([time.localtime(), "start"])
+            self.setStyleSheet(CSS)
         else:
+            self.shouldStopFishing = True
+
+    def checkShouldStopFishing(self):
+        if self.shouldStopFishing:
             self.btn_start.setObjectName("btn_standart")
             self.btn_start.setText("START")
             self.btn_start.setToolTip("Start fishing")
             self.isFishing = False
             self.tryCatchFish = False
             self.logsWindow.logs.append([time.localtime(), "stop"])
-        self.setStyleSheet(CSS)
+            self.setStyleSheet(CSS)
+            self.shouldStopFishing = False
+        self.ShouldStopFishingTimer.start()
 
     def windowShouldClose(self):
         self.settingsWindow.close()
