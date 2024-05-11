@@ -4,8 +4,9 @@ from PyQt6.QtGui import QIcon
 import sys, os
 import time
 import threading
+import cv2, pyautogui, numpy, keyboard
 
-from modules.SimpleComponents import Button
+from modules.SimpleComponents import Button, Label
 from modules.GlobalVariables import *
 from modules.SettingsWindow import SettingsWindow
 from modules.LogsWindow import LogsWindow
@@ -25,9 +26,10 @@ class MainWindow(QMainWindow):
     startCheckTimer: float = 0
     checkTimer: int = 0
     shouldStopFishing: bool = False
+    fishCount: int = 0
 
     def __init__(self, title: str) -> None:
-        QMainWindow.__init__(self)
+        super().__init__()
 
         self.title: str = title
         self.icon = APP_ICON
@@ -54,6 +56,7 @@ class MainWindow(QMainWindow):
         btn_settings.setToolTip("Settings window")
         btn_logs = Button(self, LOGS_ICON, self.width() - 84, 2, 26, 26, "btn_standart", self.openLogsWindow)
         btn_logs.setToolTip("History window")
+        self.__countLabel = Label(self, 79, 2, 135, 26, "", f"Caught: {self.fishCount}")
 
         self.ShouldStopFishingTimer = QTimer(self)
         self.ShouldStopFishingTimer.setInterval(500)
@@ -82,6 +85,7 @@ class MainWindow(QMainWindow):
             self.startFishingTimer = time.time()
             self.startCheckTimer = time.time()
             self.logsWindow.logs.append([time.localtime(), "start"])
+            self.resetFishCount()
             self.setStyleSheet(CSS)
         else:
             self.shouldStopFishing = True
@@ -109,6 +113,14 @@ class MainWindow(QMainWindow):
             if self.isFishing:
                 print("fishing")
                 time.sleep(1)
+
+    def addFishCount(self):
+        self.fishCount += 1
+        self.__countLabel.setText(f"Caught: {self.fishCount}")
+
+    def resetFishCount(self):
+        self.fishCount = 0
+        self.__countLabel.setText(f"Caught: {self.fishCount}")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
