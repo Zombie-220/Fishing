@@ -20,6 +20,9 @@ main.exe
 - Press the "START" button
 - Make yourself some tea
 
+**Note** 
+do not move the camera too far from the character, two presses of the "I" key is enough.
+
 ## Application components
 - Main window
 - Settings window (saves all changes to a local database)
