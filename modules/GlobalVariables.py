@@ -30,7 +30,7 @@ CSS = '''
     }
 
     
-    #btn_standart, #btn_consume_log {
+    #btn_standart {
         background-color: rgba(0, 65, 129, 1);
         border: 1px solid rgb(145, 145, 145);
     }
@@ -96,5 +96,9 @@ CSS = '''
     #btn_timeError_log {
         background-color: rgb(41, 9, 41);
         border: 1px solid rgb(127, 0, 127);
+    }
+    #btn_consume_log {
+        background-color: rgba(0, 65, 129, 0.3);
+        border: 1px solid rgb(145, 145, 145);
     }
 '''
