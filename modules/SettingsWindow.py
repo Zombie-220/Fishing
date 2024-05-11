@@ -1,10 +1,8 @@
 from PyQt6 import QtWidgets, QtGui, QtCore
+import json
 
-from modules.header import MainWindow
 from modules.SimpleComponents import WindowTitleBar, Button, Entry, Label
 from modules.GlobalVariables import CSS, EXIT_ICON
-
-import json
 
 class SettingsWindow(QtWidgets.QMainWindow):
     rodKey: int = 0
@@ -16,8 +14,8 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
     allOK: bool = True
 
-    def __init__(self, parent: MainWindow):
-        QtWidgets.QWidget.__init__(self)
+    def __init__(self, parent: QtWidgets.QMainWindow):
+        super().__init__()
 
         self.title = "AF  |  Settings"
         self.icon = parent.icon

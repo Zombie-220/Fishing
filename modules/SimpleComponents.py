@@ -1,12 +1,10 @@
 from PyQt6 import QtWidgets, QtGui, QtCore
-from modules.header import MainWindow
 
 class Button(QtWidgets.QPushButton):
     def __init__(self, parent: QtWidgets.QMainWindow, content: str | QtGui.QIcon,
                  x: int, y: int, width: int, height: int,
                  objectName: str, func = None):
-        
-        QtWidgets.QPushButton.__init__(self, parent)
+        super().__init__(parent)
         
         self.setGeometry(x, y, width, height)
         self.setObjectName(objectName)
@@ -25,8 +23,7 @@ class Label(QtWidgets.QLabel):
     def __init__(self, parent: QtWidgets.QMainWindow,
                  x: int, y: int, width: int, height: int,
                  objectName: str, content: str | QtGui.QPixmap):
-        
-        QtWidgets.QLabel.__init__(self, parent)
+        super().__init__(parent)
         
         self.setGeometry(x, y, width, height)
         self.setObjectName(objectName)
@@ -43,7 +40,7 @@ class Entry(QtWidgets.QLineEdit):
     def __init__(self, parent: QtWidgets.QMainWindow,
                  x: int, y: int, width: int, height: int,
                  placeholder: str, readOnly: bool, objectName: str):
-        QtWidgets.QLineEdit.__init__(self, parent)
+        super().__init__(parent)
 
         self.setGeometry(x, y, width, height)
         self.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -58,9 +55,8 @@ class Entry(QtWidgets.QLineEdit):
 
 
 class WindowTitleBar(QtWidgets.QLabel):
-    def __init__(self, parent: MainWindow) -> None:
-
-        QtWidgets.QLabel.__init__(self, parent)
+    def __init__(self, parent: QtWidgets.QMainWindow) -> None:
+        super().__init__(parent)
         
         self.icon = parent.icon
 

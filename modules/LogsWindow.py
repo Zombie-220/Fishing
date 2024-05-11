@@ -3,13 +3,12 @@ from time import struct_time
 
 from modules.GlobalVariables import CSS, EXIT_ICON
 from modules.SimpleComponents import WindowTitleBar, Button
-from modules.header import MainWindow
 
 class LogsWindow(QtWidgets.QMainWindow):
     logs: list = []
 
-    def __init__(self, parent: MainWindow):
-        QtWidgets.QMainWindow.__init__(self)
+    def __init__(self, parent: QtWidgets.QMainWindow):
+        super().__init__()
 
         self.title = "AF  |  History"
         self.icon = parent.icon
