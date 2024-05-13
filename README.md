@@ -7,21 +7,22 @@ I am writing this project primarily for myself, so support will not be regular.
 ~~Helps to spend the saved time on other useless activities~~  
 The app does the fishing for you (more details in the "How to start using" section).  
 
-## Install and launch
+## Step-by-step guide how to use it
+### Install and launch
+___installation using git___
 ```sh
 git clone https://github.com/Zombie-220/Fishing.git
 cd Fishing/dist
 main.exe
 ```
+___or download zip file from releases___ 
 
-## How to start using
+### How to start fishing
 - Stand near the water (preferably where the character will not move)
+- Bring the camera as close as possible, then press the "O" key twice
 - Cast a fishing rod
 - Press the "START" button
 - Make yourself some tea
-
-**Note**  
-do not move the camera too far from the character, two presses of the "I" key is enough.
 
 ## Application components
 - Main window
