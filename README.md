@@ -5,7 +5,7 @@ I am writing this project primarily for myself, so support will not be regular.
 
 ## What does this application do
 ~~Helps to spend the saved time on other useless activities~~  
-The app does the fishing for you (more details in the "How to start using" section).  
+The app does the fishing for you.  
 
 ## Step-by-step guide how to use it
 ### Install and launch
@@ -15,7 +15,7 @@ git clone https://github.com/Zombie-220/Fishing.git
 cd Fishing/dist
 main.exe
 ```
-___or download zip file from releases___ 
+___or download zip file from [releases](https://github.com/Zombie-220/Fishing/releases)___ 
 
 ### How to start fishing
 - Stand near the water (preferably where the character will not move)
