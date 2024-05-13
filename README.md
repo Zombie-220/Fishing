@@ -18,6 +18,8 @@ main.exe
 ___or download zip file from [releases](https://github.com/Zombie-220/Fishing/releases)___ 
 
 ### How to start fishing
+**Note:** Before you start fishing, it is recommended to check the settings window to see if the keys match (most likely you will need to change them)
+
 - Stand near the water (preferably where the character will not move)
 - Bring the camera as close as possible, then press the "O" key twice
 - Cast a fishing rod
