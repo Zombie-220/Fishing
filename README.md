@@ -26,6 +26,8 @@ ___or download zip file from [releases](https://github.com/Zombie-220/Fishing/re
 - Press the "START" button
 - Make yourself some tea
 
+**Video guide** [here](https://youtu.be/dakH4vISFCI)
+
 ## Application components
 - Main window
 - Settings window (saves all changes to a local database)
