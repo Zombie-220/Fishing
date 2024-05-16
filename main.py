@@ -11,6 +11,8 @@ from modules.GlobalVariables import *
 from modules.SettingsWindow import SettingsWindow
 from modules.LogsWindow import LogsWindow
 
+# Vetex, this message is for you. If I get caught, I think I deserve to be praised...
+
 # Ha-ha
 # while I was writing the program I spent 10 days and caught only two sunken treasures (i caught 5000+ fish)
 # but i got Expert Angler title, hah
