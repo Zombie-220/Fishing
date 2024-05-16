@@ -10,6 +10,7 @@ class LogsWindow(QtWidgets.QMainWindow):
     def __init__(self, parent: QtWidgets.QMainWindow):
         super().__init__()
 
+        self.parent = parent
         self.title = "AF  |  History"
         self.icon = parent.icon
 
@@ -79,3 +80,4 @@ class LogsWindow(QtWidgets.QMainWindow):
     def deleteLogs(self):
         while self.__vBox.itemAt(0):
             self.__vBox.removeWidget(self.__vBox.itemAt(0).widget())
+        self.parent.resetFishCount()
