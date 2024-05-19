@@ -7,7 +7,7 @@ from modules.GlobalVariables import CSS, EXIT_ICON
 class SettingsWindow(QtWidgets.QMainWindow):
     rodKey: int = 0
     mealKey: int = 9
-    potionKey: int = 8
+    potionKey: int|str = 8
     useMeal: bool = False
     usePotion: bool = False
     checkTime: int = 300
@@ -98,39 +98,21 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.setStyleSheet(CSS)
         self.close()
 
-    def checkEntry(self, variable, entry: Entry):
-        possibleKeys = [1,2,3,4,5,6,7,8,9,0]
+    def checkEntry(self, variable: int|str, entry: Entry):
         newVariable = entry.text().lower()
-        if newVariable == 'e' and variable == self.potionKey:
+        if (newVariable in ['1','2','3','4','5','6','7','8','9','0']) or (entry == self.__entry_potionKey and newVariable == 'e') or (newVariable == ''):
+            if newVariable in ['1','2','3','4','5','6','7','8','9','0']:
+                newVariable = int(newVariable)
+            elif newVariable == '':
+                newVariable = variable
             entry.setObjectName("entry_standart")
+            entry.setPlaceholderText(f"0-9, default is {newVariable}")
             self.setStyleSheet(CSS)
-            variable = newVariable
-            entry.setPlaceholderText(f"0-9, default is {variable}")
-            allOK = True
-            return variable, allOK
-        try:
-            newVariable = int(newVariable)
-            if newVariable not in possibleKeys:
-                entry.setObjectName("entry_red")
-                self.setStyleSheet(CSS)
-                newVariable = variable
-                allOK = False
-                return newVariable, allOK
-        except:
-            if newVariable == "":
-                newVariable = variable
-            else:
-                entry.setObjectName("entry_red")
-                self.setStyleSheet(CSS)
-                newVariable = variable
-                allOK = False
-                return newVariable, allOK
-        entry.setObjectName("entry_standart")
-        self.setStyleSheet(CSS)
-        variable = newVariable
-        entry.setPlaceholderText(f"0-9, default is {variable}")
-        allOK = True
-        return variable, allOK
+            return newVariable, True
+        else:
+            entry.setObjectName("entry_red")
+            self.setStyleSheet(CSS)
+            return variable, False
 
     def saveChanges(self) -> None:
         check1 = self.checkEntry(self.rodKey, self.__entry_rodKey)
@@ -142,7 +124,9 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.potionKey = check3[0]
 
         newPotionDuration = self.__entry_potionDuration.text()
-        try: newPotionDuration = int(newPotionDuration)
+        try:
+            newPotionDuration = int(newPotionDuration)
+            self.allOK = True
         except:
             if newPotionDuration == "":
                 newPotionDuration = self.checkTime
