@@ -42,7 +42,7 @@ class MainWindow(QMainWindow):
     shouldStopFishing: bool = False
     fishCount: int = 0
 
-    def __init__(self, title: str) -> None:
+    def __init__(self, title: str):
         super().__init__()
 
         self.title: str = title
@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
 
         self.btn_start = Button(self, "START", 2, 2, 75, 26, "btn_standart", self.startFishing)
         self.btn_start.setToolTip("Start fishing")
-        btn_close = Button(self, EXIT_ICON, self.width() - 28, 2, 26, 26, "btn_red", self.windowShouldClose)
+        btn_close = Button(self, EXIT_ICON, self.width() - 28, 2, 26, 26, "btn_red", self.closeEvent)
         btn_close.setToolTip("Close window")
         btn_settings = Button(self, SETTING_ICON, self.width() - 56, 2, 26, 26, "btn_standart", self.openSettings)
         btn_settings.setToolTip("Settings window")
@@ -77,19 +77,19 @@ class MainWindow(QMainWindow):
         self.ShouldStopFishingTimer.timeout.connect(self.checkShouldStopFishing)
         self.ShouldStopFishingTimer.start()
 
-    def openSettings(self):
+    def openSettings(self) -> None:
         if self.settingsWindow.isVisible():
             self.settingsWindow.hide()
         else:
             self.settingsWindow.show()
 
-    def openLogsWindow(self):
+    def openLogsWindow(self) -> None:
         if self.logsWindow.isVisible():
             self.logsWindow.hide()
         else:
             self.logsWindow.show()
 
-    def startFishing(self):
+    def startFishing(self) -> None:
         self.isFishing = not (self.isFishing)
         if self.isFishing:
             self.btn_start.setObjectName("btn_red")
@@ -103,7 +103,7 @@ class MainWindow(QMainWindow):
         else:
             self.shouldStopFishing = True
 
-    def checkShouldStopFishing(self):
+    def checkShouldStopFishing(self) -> None:
         if self.shouldStopFishing:
             self.btn_start.setObjectName("btn_standart")
             self.btn_start.setText("START")
@@ -115,12 +115,12 @@ class MainWindow(QMainWindow):
             self.shouldStopFishing = False
         self.ShouldStopFishingTimer.start()
 
-    def windowShouldClose(self):
+    def closeEvent(self, event) -> None:
         self.settingsWindow.close()
         self.logsWindow.close()
         self.close()
 
-    def fishing(self):
+    def fishing(self) -> None:
         while self.isVisible():
             if self.isFishing:
                 self.timeForWait = time.time() - self.startFishingTimer
@@ -154,10 +154,11 @@ class MainWindow(QMainWindow):
                 elif (self.checkTimer >= self.settingsWindow.checkTime) and (self.settingsWindow.usePotion or self.settingsWindow.useMeal):
                     if self.settingsWindow.usePotion:
                         keyboard.press_and_release(f"{self.settingsWindow.potionKey}")
-                        pyautogui.click(button = "left")
-                        time.sleep(0.75)
-                        keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
-                        pyautogui.click(button = "left")
+                        if self.settingsWindow.potionKey != 'e':
+                            pyautogui.click(button = "left")
+                            time.sleep(0.75)
+                            keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
+                            pyautogui.click(button = "left")
                     if self.settingsWindow.useMeal:
                         keyboard.press_and_release(f"{self.settingsWindow.mealKey}")
                         pyautogui.click(button = "left")
@@ -170,7 +171,7 @@ class MainWindow(QMainWindow):
 
                 time.sleep(0.25)
 
-    def endTry(self, log: str):
+    def endTry(self, log: str) -> None:
         rodKey = f"{self.settingsWindow.rodKey}"
         self.tryCatchFish = False
         self.startFishingTimer = time.time()
@@ -181,11 +182,11 @@ class MainWindow(QMainWindow):
         time.sleep(0.2)
         pyautogui.click(button = "left")
 
-    def addFishCount(self):
+    def addFishCount(self) -> None:
         self.fishCount += 1
         self.__countLabel.setText(f"Caught: {self.fishCount}")
 
-    def resetFishCount(self):
+    def resetFishCount(self) -> None:
         self.fishCount = 0
         self.__countLabel.setText(f"Caught: {self.fishCount}")
 
@@ -206,4 +207,4 @@ if __name__ == "__main__":
     window.fishingThread.start()
     sys.exit(app.exec())
 
-#  pyinstaller -w -F -i"images\icons\APP_ICON.ico" main.py
+#  pyinstaller -w -F -i"images\icons\APP_ICON.ico" -n "auto fishing" main.py

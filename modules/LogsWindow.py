@@ -47,10 +47,10 @@ class LogsWindow(QtWidgets.QMainWindow):
         self.timer.setInterval(500)
         self.timer.start()
 
-    def scrollToBottom(self, min, max):
+    def scrollToBottom(self, min, max) -> None:
         self.__scrollArea.verticalScrollBar().setValue(max)
 
-    def addLog(self, time: struct_time, reasonType: str):
+    def addLog(self, time: struct_time, reasonType: str) -> None:
         objectName = f"btn_{reasonType}_log"
         if reasonType == "fish":
             reason = "Fish caught"
@@ -71,13 +71,13 @@ class LogsWindow(QtWidgets.QMainWindow):
         self.__vBox.addWidget(btn)
         self.__scrollArea.setWidget(self.__widget)
 
-    def checkLogs(self):
+    def checkLogs(self) -> None:
         if len(self.logs) != 0:
             self.addLog(self.logs[0][0], self.logs[0][1])
             self.logs.pop(0)
         self.timer.start()
 
-    def deleteLogs(self):
+    def deleteLogs(self) -> None:
         while self.__vBox.itemAt(0):
             self.__vBox.removeWidget(self.__vBox.itemAt(0).widget())
         self.parent.resetFishCount()

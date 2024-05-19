@@ -73,19 +73,19 @@ class SettingsWindow(QtWidgets.QMainWindow):
 
         self.readDataBase()
 
-    def changeMealFlag(self):
+    def changeMealFlag(self) -> None:
         self.useMeal = not self.useMeal
         if self.useMeal: self.__button_useMeal.setObjectName("btn_standart")
         else: self.__button_useMeal.setObjectName("btn_red")
         self.setStyleSheet(CSS)
 
-    def changePotionFlag(self):
+    def changePotionFlag(self) -> None:
         self.usePotion = not self.usePotion
         if self.usePotion: self.__button_usePotion.setObjectName("btn_standart")
         else: self.__button_usePotion.setObjectName("btn_red")
         self.setStyleSheet(CSS)
 
-    def clearEntrys(self):
+    def clearEntrys(self) -> None:
         self.__entry_rodKey.clear()
         self.__entry_mealKey.clear()
         self.__entry_potionKey.clear()
@@ -99,12 +99,18 @@ class SettingsWindow(QtWidgets.QMainWindow):
         self.close()
 
     def checkEntry(self, variable, entry: Entry):
-        possibleNumbers = [1,2,3,4,5,6,7,8,9,0]
-
-        newVariable = entry.text()
+        possibleKeys = [1,2,3,4,5,6,7,8,9,0]
+        newVariable = entry.text().lower()
+        if newVariable == 'e' and variable == self.potionKey:
+            entry.setObjectName("entry_standart")
+            self.setStyleSheet(CSS)
+            variable = newVariable
+            entry.setPlaceholderText(f"0-9, default is {variable}")
+            allOK = True
+            return variable, allOK
         try:
             newVariable = int(newVariable)
-            if newVariable not in possibleNumbers:
+            if newVariable not in possibleKeys:
                 entry.setObjectName("entry_red")
                 self.setStyleSheet(CSS)
                 newVariable = variable
@@ -119,7 +125,6 @@ class SettingsWindow(QtWidgets.QMainWindow):
                 newVariable = variable
                 allOK = False
                 return newVariable, allOK
-            
         entry.setObjectName("entry_standart")
         self.setStyleSheet(CSS)
         variable = newVariable
@@ -127,8 +132,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
         allOK = True
         return variable, allOK
 
-    def saveChanges(self):
-
+    def saveChanges(self) -> None:
         check1 = self.checkEntry(self.rodKey, self.__entry_rodKey)
         check2 = self.checkEntry(self.mealKey, self.__entry_mealKey)
         check3 = self.checkEntry(self.potionKey, self.__entry_potionKey)
@@ -170,7 +174,7 @@ class SettingsWindow(QtWidgets.QMainWindow):
             with open('DB.json', 'w') as file:
                 json.dump(newDBobject, file)
 
-    def readDataBase(self):
+    def readDataBase(self) -> None:
         file = open("DB.json", "r")
         data = json.loads(file.read())
 
