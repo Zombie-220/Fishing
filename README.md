@@ -34,5 +34,4 @@ ___or download zip file from [releases](https://github.com/Zombie-220/Fishing/re
 - History window (records all actions while fishing)
 
 ## From author
-I will be glad for any feedback ~~keep the negative one for yourself~~ and help in maintaining the functionality of the application.  
-The main fishing script was not added to the release version (for personal, not entirely clear reasons).  
+I will be glad for any feedback ~~keep the negative one for yourself~~ and help in maintaining the functionality of the application. 
