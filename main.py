@@ -17,15 +17,17 @@ from modules.LogsWindow import LogsWindow
 # while I was writing the program I spent 10 days and caught only two sunken treasures (i caught 5000+ fish)
 # but i got Expert Angler title, hah
 
-def locate_image(img, threshold = 0.8):
+def locate_image(img, threshold: float):
     screenshot = pyautogui.screenshot()
     screenshot = numpy.array(screenshot)
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-    
+
     result = cv2.matchTemplate(screenshot, img, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+    print(f'{max_val:.3}')
 
     if max_val >= threshold:
+        print(f'found: {max_val:.3}')
         return (max_loc[0], max_loc[1])
     return None
 
@@ -132,15 +134,15 @@ class MainWindow(QMainWindow):
                         self.startThisTry = time.time()
 
                     timeForThisTry = time.time() - self.startThisTry
-                    if (locate_image(IMG_FISH) or locate_image(IMG_JUNK)) and (timeForThisTry <= self.timeForTry):
+                    if (locate_image(IMG_FISH, 0.7) or locate_image(IMG_JUNK, 0.7)) and (timeForThisTry <= self.timeForTry):
                         self.endTry("fish")
                         self.addFishCount()
                     else: pyautogui.click(button = "left")
-                    if locate_image(IMG_TREASURE) and (timeForThisTry <= self.timeForTry):
+                    if locate_image(IMG_TREASURE, 0.7) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
                         self.endTry("treasure")
                         self.addFishCount()
                     else: pyautogui.click(button = "left")
-                    if locate_image(IMG_SUNKEN) and (timeForThisTry <= self.timeForTry):
+                    if locate_image(IMG_SUNKEN, 0.7) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
                         self.endTry("sunken")
                         self.addFishCount()
                     else: pyautogui.click(button = "left")
@@ -148,7 +150,7 @@ class MainWindow(QMainWindow):
                     else: pyautogui.click(button = "left")
                 
                 elif self.timeForWait >= self.maxTimeForWait:
-                    if (locate_image(CONNECT_ERR_1)) or (locate_image(CONNECT_ERR_2)) or (locate_image(CONNECT_ERR_3)): self.shouldStopFishing = True
+                    if (locate_image(CONNECT_ERR_1, 0.7)) or (locate_image(CONNECT_ERR_2, 0.7)) or (locate_image(CONNECT_ERR_3, 0.7)): self.shouldStopFishing = True
                     else: self.endTry("timeError")
 
                 elif (self.checkTimer >= self.settingsWindow.checkTime) and (self.settingsWindow.usePotion or self.settingsWindow.useMeal):
