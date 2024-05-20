@@ -24,10 +24,8 @@ def locate_image(img, threshold: float):
 
     result = cv2.matchTemplate(screenshot, img, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-    print(f'{max_val:.3}')
 
     if max_val >= threshold:
-        print(f'found: {max_val:.3}')
         return (max_loc[0], max_loc[1])
     return None
 
@@ -93,7 +91,7 @@ class MainWindow(QMainWindow):
 
     def startFishing(self) -> None:
         self.isFishing = not (self.isFishing)
-        if self.isFishing:
+        if self.isFishing and not self.shouldStopFishing:
             self.btn_start.setObjectName("btn_red")
             self.btn_start.setText("STOP")
             self.btn_start.setToolTip("Stop fishing")
