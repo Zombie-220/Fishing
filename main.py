@@ -125,30 +125,29 @@ class MainWindow(QMainWindow):
             if self.isFishing:
                 self.timeForWait = time.time() - self.startFishingTimer
                 self.checkTimer = time.time() - self.startCheckTimer
-                if (self.tryCatchFish or locate_image(IMG_START, 0.7)):
-                    if not self.tryCatchFish:
-                        self.tryCatchFish = True
-                        pyautogui.click(button = "left")
-                        self.startThisTry = time.time()
+                if locate_image(IMG_START, 0.7):
+                    self.tryCatchFish = True
+                    self.startThisTry = time.time()
+                    while self.tryCatchFish:
+                        # pyautogui.click(button = "left")
+                        timeForThisTry = time.time() - self.startThisTry
+                        if (locate_image(IMG_FISH, 0.8) or locate_image(IMG_JUNK, 0.8)) and (timeForThisTry <= self.timeForTry):
+                            self.endTry("fish")
+                            self.addFishCount()
+                        else: pyautogui.click(button = "left")
+                        if locate_image(IMG_TREASURE, 0.8) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
+                            self.endTry("treasure")
+                            self.addFishCount()
+                        else: pyautogui.click(button = "left")
+                        if locate_image(IMG_SUNKEN, 0.8) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
+                            self.endTry("sunken")
+                            self.addFishCount()
+                        else: pyautogui.click(button = "left")
+                        if timeForThisTry > self.timeForTry: self.endTry("timeError")
+                        else: pyautogui.click(button = "left")
 
-                    timeForThisTry = time.time() - self.startThisTry
-                    if (locate_image(IMG_FISH, 0.7) or locate_image(IMG_JUNK, 0.7)) and (timeForThisTry <= self.timeForTry):
-                        self.endTry("fish")
-                        self.addFishCount()
-                    else: pyautogui.click(button = "left")
-                    if locate_image(IMG_TREASURE, 0.7) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
-                        self.endTry("treasure")
-                        self.addFishCount()
-                    else: pyautogui.click(button = "left")
-                    if locate_image(IMG_SUNKEN, 0.7) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
-                        self.endTry("sunken")
-                        self.addFishCount()
-                    else: pyautogui.click(button = "left")
-                    if timeForThisTry > self.timeForTry: self.endTry("timeError")
-                    else: pyautogui.click(button = "left")
-                
                 elif self.timeForWait >= self.maxTimeForWait:
-                    if (locate_image(CONNECT_ERR_1, 0.7)) or (locate_image(CONNECT_ERR_2, 0.7)) or (locate_image(CONNECT_ERR_3, 0.7)): self.shouldStopFishing = True
+                    if (locate_image(CONNECT_ERR_1, 0.8)) or (locate_image(CONNECT_ERR_2, 0.8)) or (locate_image(CONNECT_ERR_3, 0.8)): self.shouldStopFishing = True
                     else: self.endTry("timeError")
 
                 elif (self.checkTimer >= self.settingsWindow.checkTime) and (self.settingsWindow.usePotion or self.settingsWindow.useMeal):
