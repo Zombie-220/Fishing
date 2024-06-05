@@ -129,7 +129,7 @@ class MainWindow(QMainWindow):
                     self.tryCatchFish = True
                     self.startThisTry = time.time()
                     while self.tryCatchFish:
-                        # pyautogui.click(button = "left")
+                        pyautogui.click(button = "left")
                         timeForThisTry = time.time() - self.startThisTry
                         if (locate_image(IMG_FISH, 0.8) or locate_image(IMG_JUNK, 0.8)) and (timeForThisTry <= self.timeForTry):
                             self.endTry("fish")
