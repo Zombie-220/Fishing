@@ -1,1 +1,1 @@
-{"rodKey": 0, "mealKey": 9, "potionKey": 8, "useMeal": false, "usePotion": false, "checkTime": 300}
+{"rodKey": 0, "mealKey": 9, "potionKey": 8, "useMeal": false, "usePotion": false, "mealTimer": 300, "potionTimer": 300, "timeForTry": 22.5}
