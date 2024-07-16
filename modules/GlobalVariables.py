@@ -21,9 +21,14 @@ CSS = '''
         background-color: rgba(0,0,0,0);
     }
 
-    #MainWindow, #TitleBar, #Window, QToolTip, #btn_fish_log {
+    #MainWindow, #TitleBar, #Window, QToolTip, #btn_fish_log, QComboBox, QComboBox QAbstractItemView, QComboBox::drop-down {
         background-color: rgb(21, 21, 21);
-        border: 1px solid rgb(145, 145, 145)
+        border: 1px solid rgb(145, 145, 145);
+    }
+    QComboBox::drop-down {
+        image: url(./images/icons/downArrow.png);
+        width: 20px;
+        height: 20px;
     }
     QToolTip {
         font-size: 12px;

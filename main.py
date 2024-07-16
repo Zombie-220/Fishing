@@ -22,19 +22,30 @@ def locate_image(img, threshold: float):
     screenshot = numpy.array(screenshot)
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
 
-    result = cv2.matchTemplate(screenshot, img, cv2.TM_CCOEFF_NORMED)
+    image = numpy.uint8(img)
+    result = cv2.matchTemplate(screenshot, image, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
 
     if max_val >= threshold:
         return (max_loc[0], max_loc[1])
     return None
 
+def changeImageSize(path: str, monitorSize: list[int]) -> None:
+    img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+    imgSize = [img.shape[1], img.shape[0]]
+    mySize = [1536, 864]
+
+    targetWidth = int((((monitorSize[0] * 100) // mySize[0]) * 0.01) * imgSize[0])
+    targetHeight = int((((monitorSize[1] * 100) // mySize[1]) * 0.01) * imgSize[1])
+
+    output = cv2.resize(img, (targetWidth, targetHeight))
+    cv2.imwrite(path, output)
+
 class MainWindow(QMainWindow):
     title: str = "title"
     isFishing: bool = False
     tryCatchFish: bool = False
     startThisTry: float = 0
-    timeForTry: int = 30
     maxTimeForWait: int = 70
     startFishingTimer: float = 0
     startCheckTimer: float = 0
@@ -131,19 +142,21 @@ class MainWindow(QMainWindow):
                     while self.tryCatchFish:
                         pyautogui.click(button = "left")
                         timeForThisTry = time.time() - self.startThisTry
-                        if (locate_image(IMG_FISH, 0.8) or locate_image(IMG_JUNK, 0.8)) and (timeForThisTry <= self.timeForTry):
+                        if (locate_image(IMG_FISH, 0.8) or locate_image(IMG_JUNK, 0.8)) and (timeForThisTry <= self.settingsWindow.timeForTry):
                             self.endTry("fish")
                             self.addFishCount()
                         else: pyautogui.click(button = "left")
-                        if locate_image(IMG_TREASURE, 0.8) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
+                        if locate_image(IMG_TREASURE, 0.8) and (timeForThisTry <= self.settingsWindow.timeForTry) and self.tryCatchFish:
                             self.endTry("treasure")
                             self.addFishCount()
                         else: pyautogui.click(button = "left")
-                        if locate_image(IMG_SUNKEN, 0.8) and (timeForThisTry <= self.timeForTry) and self.tryCatchFish:
+                        if locate_image(IMG_SUNKEN, 0.8) and (timeForThisTry <= self.settingsWindow.timeForTry) and self.tryCatchFish:
                             self.endTry("sunken")
                             self.addFishCount()
                         else: pyautogui.click(button = "left")
-                        if timeForThisTry > self.timeForTry: self.endTry("timeError")
+                        if timeForThisTry > self.settingsWindow.timeForTry:
+                            time.sleep(1)
+                            self.endTry("timeError")
                         else: pyautogui.click(button = "left")
 
                 elif self.timeForWait >= self.maxTimeForWait:
@@ -190,17 +203,32 @@ class MainWindow(QMainWindow):
         self.__countLabel.setText(f"Caught: {self.fishCount}")
 
 if __name__ == "__main__":
-    IMG_START = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/start.png')
-    IMG_FISH = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/fish.png')
-    IMG_TREASURE = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/treasure.png')
-    IMG_JUNK = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/junk.png')
-    IMG_SUNKEN = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/sunken.png')
-    CONNECT_ERR_1 = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_1.png')
-    CONNECT_ERR_2 = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_2.png')
-    CONNECT_ERR_3 = cv2.imread(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_3.png')
-
     app = QApplication(sys.argv)
     screenSize = app.primaryScreen().geometry()
+
+    allImagesPath = [
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/start.png',
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/fish.png',
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/treasure.png',
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/junk.png',
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/sunken.png',
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_1.png',
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_2.png',
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_3.png'
+    ]
+
+    for i in allImagesPath:
+        changeImageSize(i, [screenSize.width(), screenSize.height()])
+
+    IMG_START = cv2.imread(allImagesPath[0])
+    IMG_FISH = cv2.imread(allImagesPath[1])
+    IMG_TREASURE = cv2.imread(allImagesPath[2])
+    IMG_JUNK = cv2.imread(allImagesPath[3])
+    IMG_SUNKEN = cv2.imread(allImagesPath[4])
+    CONNECT_ERR_1 = cv2.imread(allImagesPath[5])
+    CONNECT_ERR_2 = cv2.imread(allImagesPath[6])
+    CONNECT_ERR_3 = cv2.imread(allImagesPath[7])
+
     window = MainWindow("Auto fishing")
     window.show()
     window.fishingThread.start()
