@@ -48,8 +48,10 @@ class MainWindow(QMainWindow):
     startThisTry: float = 0
     maxTimeForWait: int = 70
     startFishingTimer: float = 0
-    startCheckTimer: float = 0
-    checkTimer: int = 0
+    startCheckMealTimer: float = 0
+    checkMealTimer: int = 0
+    startCheckPotionTimer: float = 0
+    checkPotionTimer: int = 0
     shouldStopFishing: bool = False
     fishCount: int = 0
 
@@ -108,7 +110,8 @@ class MainWindow(QMainWindow):
             self.btn_start.setToolTip("Stop fishing")
             self.isFishing = True
             self.startFishingTimer = time.time()
-            self.startCheckTimer = time.time()
+            self.startCheckMealTimer = time.time()
+            self.startCheckPotionTimer = time.time()
             self.logsWindow.logs.append([time.localtime(), "start"])
             self.setStyleSheet(CSS)
         else:
@@ -135,7 +138,8 @@ class MainWindow(QMainWindow):
         while self.isVisible():
             if self.isFishing:
                 self.timeForWait = time.time() - self.startFishingTimer
-                self.checkTimer = time.time() - self.startCheckTimer
+                self.checkMealTimer = time.time() - self.startCheckMealTimer
+                self.checkPotionTimer = time.time() - self.startCheckPotionTimer
                 if locate_image(IMG_START, 0.7):
                     self.tryCatchFish = True
                     self.startThisTry = time.time()
@@ -163,23 +167,24 @@ class MainWindow(QMainWindow):
                     if (locate_image(CONNECT_ERR_1, 0.8)) or (locate_image(CONNECT_ERR_2, 0.8)) or (locate_image(CONNECT_ERR_3, 0.8)): self.shouldStopFishing = True
                     else: self.endTry("timeError")
 
-                elif (self.checkTimer >= self.settingsWindow.checkTime) and (self.settingsWindow.usePotion or self.settingsWindow.useMeal):
-                    if self.settingsWindow.usePotion:
-                        keyboard.press_and_release(f"{self.settingsWindow.potionKey}")
-                        if self.settingsWindow.potionKey != 'e':
-                            pyautogui.click(button = "left")
-                            time.sleep(0.75)
-                            keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
-                            pyautogui.click(button = "left")
-                    if self.settingsWindow.useMeal:
-                        keyboard.press_and_release(f"{self.settingsWindow.mealKey}")
-                        pyautogui.click(button = "left")
-                        time.sleep(0.75)
-                        keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
-                        pyautogui.click(button = "left") 
-                    self.logsWindow.logs.append([time.localtime(), "consume"])
+                elif (self.checkMealTimer >= self.settingsWindow.mealTimer) and (self.settingsWindow.useMeal):
+                    keyboard.press_and_release(f"{self.settingsWindow.mealKey}")
+                    pyautogui.click(button = "left")
+                    time.sleep(0.75)
+                    keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
+                    pyautogui.click(button = "left")
+                    self.logsWindow.logs.append([time.localtime(), "consumeMeal"])
                     self.startFishingTimer = time.time()
-                    self.startCheckTimer = time.time()
+                    self.startCheckMealTimer = time.time()
+                elif (self.checkPotionTimer >= self.settingsWindow.potionTimer) and (self.settingsWindow.usePotion):
+                    keyboard.press_and_release(f"{self.settingsWindow.potionKey}")
+                    pyautogui.click(button = "left")
+                    time.sleep(0.75)
+                    keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
+                    pyautogui.click(button = "left")
+                    self.logsWindow.logs.append([time.localtime(), "consumePotion"])
+                    self.startFishingTimer = time.time()
+                    self.startCheckPotionTimer = time.time()
 
                 time.sleep(0.25)
 

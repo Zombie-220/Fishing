@@ -102,7 +102,7 @@ CSS = '''
         background-color: rgb(41, 9, 41);
         border: 1px solid rgb(127, 0, 127);
     }
-    #btn_consume_log {
+    #btn_consumeMeal_log, #btn_consumePotion_log {
         background-color: rgba(0, 65, 129, 0.3);
         border: 1px solid rgb(145, 145, 145);
     }

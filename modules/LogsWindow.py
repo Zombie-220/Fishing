@@ -64,8 +64,10 @@ class LogsWindow(QtWidgets.QMainWindow):
             reason = "Session end"
         elif reasonType == "timeError":
             reason = "Waiting time is up"
-        elif reasonType == "consume":
-            reason = "Consume something"
+        elif reasonType == "consumeMeal":
+            reason = "Consume meal"
+        elif reasonType == "consumePotion":
+            reason = "Consume potion"
 
         btn = Button(self, f"{time.tm_hour:02}:{time.tm_min:02}:{time.tm_sec:02}  |  {reason}", 0, 0, 0, 0, objectName)
         self.__vBox.addWidget(btn)
