@@ -5,6 +5,7 @@ import sys, os
 import time
 import threading
 import cv2, pyautogui, numpy, keyboard
+import json
 
 from modules.SimpleComponents import Button, Label
 from modules.GlobalVariables import *
@@ -30,16 +31,34 @@ def locate_image(img, threshold: float):
         return (max_loc[0], max_loc[1])
     return None
 
+def getLastSize() -> list[int]:
+    file = open("DB.json", "r")
+    data = json.loads(file.read())
+    size = data["screenSize"][0]
+    return [size["width"], size["height"]]
+
+def changeLastSize(newSize: list[int]) -> None:
+    newObject = {
+        "width": newSize[0],
+        "height": newSize[1] 
+    }
+    with open('screenSize.json', 'w') as file:
+        json.dump(newObject, file)
+
 def changeImageSize(path: str, monitorSize: list[int]) -> None:
     img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     imgSize = [img.shape[1], img.shape[0]]
-    mySize = [1536, 864]
+    mySize = getLastSize()
+
+    print(mySize)
 
     targetWidth = int((((monitorSize[0] * 100) // mySize[0]) * 0.01) * imgSize[0])
     targetHeight = int((((monitorSize[1] * 100) // mySize[1]) * 0.01) * imgSize[1])
 
-    output = cv2.resize(img, (targetWidth, targetHeight))
-    cv2.imwrite(path, output)
+    if imgSize[0] != monitorSize[0]:
+        output = cv2.resize(img, (targetWidth, targetHeight))
+        cv2.imwrite(path, output)
+        changeLastSize([monitorSize[0], monitorSize[1]])
 
 class MainWindow(QMainWindow):
     title: str = "title"
@@ -222,8 +241,9 @@ if __name__ == "__main__":
         Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_3.png'
     ]
 
-    for i in allImagesPath:
-        changeImageSize(i, [screenSize.width(), screenSize.height()])
+    print(getLastSize())
+    # for i in allImagesPath:
+    #     changeImageSize(i, [screenSize.width(), screenSize.height()])
 
     IMG_START = cv2.imread(allImagesPath[0])
     IMG_FISH = cv2.imread(allImagesPath[1])

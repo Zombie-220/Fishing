@@ -172,16 +172,22 @@ class SettingsWindow(QtWidgets.QMainWindow):
         if check1[1] and check2[1] and check3[1] and check4[1] and check5[1]:
             self.clearEntrys()
 
+            with open("DB.json", "r") as file:
+                data = json.loads(file.read())
+                screenSize = data["screenSize"][0]
+
             newDBobject = {
-                "rodKey": self.rodKey,
-                "mealKey": self.mealKey,
-                "potionKey": self.potionKey,
-                "useMeal": self.useMeal,
-                "usePotion": self.usePotion,
-                "mealTimer": self.mealTimer,
-                "potionTimer": self.potionTimer,
-                "timeForTry": self.timeForTry
-            }
+                "settings": [{
+                    "rodKey": self.rodKey,
+                    "mealKey": self.mealKey,
+                    "potionKey": self.potionKey,
+                    "useMeal": self.useMeal,
+                    "usePotion": self.usePotion,
+                    "mealTimer": self.mealTimer,
+                    "potionTimer": self.potionTimer,
+                    "timeForTry": self.timeForTry
+                }],
+                "screenSize": [screenSize]}
 
             with open('DB.json', 'w') as file:
                 json.dump(newDBobject, file)
@@ -190,14 +196,16 @@ class SettingsWindow(QtWidgets.QMainWindow):
         file = open("DB.json", "r")
         data = json.loads(file.read())
 
-        self.rodKey = data["rodKey"]
-        self.mealKey = data["mealKey"]
-        self.potionKey = data["potionKey"]
-        self.useMeal = data["useMeal"]
-        self.usePotion = data["usePotion"]
-        self.mealTimer = data["mealTimer"]
-        self.potionTimer = data["potionTimer"]
-        self.timeForTry = data["timeForTry"]
+        settings = data['settings'][0]
+
+        self.rodKey = settings["rodKey"]
+        self.mealKey = settings["mealKey"]
+        self.potionKey = settings["potionKey"]
+        self.useMeal = settings["useMeal"]
+        self.usePotion = settings["usePotion"]
+        self.mealTimer = settings["mealTimer"]
+        self.potionTimer = settings["potionTimer"]
+        self.timeForTry = settings["timeForTry"]
 
         self.__entry_rodKey.setPlaceholderText(f"0-9, default is {self.rodKey}")
         self.__entry_mealKey.setPlaceholderText(f"0-9, default is {self.mealKey}")
