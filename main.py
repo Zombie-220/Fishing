@@ -6,6 +6,7 @@ import time
 import threading
 import cv2, pyautogui, numpy, keyboard
 import json
+import ctypes
 
 from modules.SimpleComponents import Button, Label
 from modules.GlobalVariables import *
@@ -60,9 +61,8 @@ def changeImageSize(path: str, monitorSize: list[int], lastUsedSize: list[int]) 
     targetWidth = int((((monitorSize[0] * 100) // mySize[0]) * 0.01) * imgSize[0])
     targetHeight = int((((monitorSize[1] * 100) // mySize[1]) * 0.01) * imgSize[1])
 
-    if imgSize[0] != monitorSize[0]:
-        output = cv2.resize(img, (targetWidth, targetHeight))
-        cv2.imwrite(path, output)
+    output = cv2.resize(img, (targetWidth, targetHeight))
+    cv2.imwrite(path, output)
 
 class MainWindow(QMainWindow):
     title: str = "title"
@@ -231,6 +231,9 @@ class MainWindow(QMainWindow):
         self.__countLabel.setText(f"Caught: {self.fishCount}")
 
 if __name__ == "__main__":
+    user32 = ctypes.windll.user32
+    user32.SetProcessDPIAware()
+
     app = QApplication(sys.argv)
     screenSize = app.primaryScreen().geometry()
 
@@ -245,11 +248,12 @@ if __name__ == "__main__":
         Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_3.png'
     ]
 
+    actualScreenSize = [user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)]
     lastUsedSize = getLastSize()
-    if lastUsedSize[0] != screenSize.width():
+    if lastUsedSize[0] != actualScreenSize[0]:
         for i in allImagesPath:
-            changeImageSize(i, [screenSize.width(), screenSize.height()], lastUsedSize)
-        changeLastSize([screenSize.width(), screenSize.height()])
+            changeImageSize(i, actualScreenSize, lastUsedSize)
+        changeLastSize(actualScreenSize)
 
     IMG_START = cv2.imread(allImagesPath[0])
     IMG_FISH = cv2.imread(allImagesPath[1])
