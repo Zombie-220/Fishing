@@ -5,11 +5,8 @@ app = QtWidgets.QApplication(sys.argv)
 
 APP_ICON = QtGui.QPixmap(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\APP_ICON.png').scaled(
                         30, 30, transformMode = QtCore.Qt.TransformationMode.SmoothTransformation)
-
 SETTING_ICON = QtGui.QIcon(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\SETTING_ICON.png')
-
 EXIT_ICON = QtGui.QIcon(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\EXIT_ICON.png')
-
 LOGS_ICON = QtGui.QIcon(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\LOGS_ICON.png')
 
 CSS = '''
@@ -26,7 +23,7 @@ CSS = '''
         border: 1px solid rgb(145, 145, 145);
     }
     QComboBox::drop-down {
-        image: url(./images/icons/downArrow.png);
+        image: url(./images/icons/DOWN_ARROW.png);
         width: 20px;
         height: 20px;
     }

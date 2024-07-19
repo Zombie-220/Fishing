@@ -38,19 +38,24 @@ def getLastSize() -> list[int]:
     return [size["width"], size["height"]]
 
 def changeLastSize(newSize: list[int]) -> None:
-    newObject = {
-        "width": newSize[0],
-        "height": newSize[1] 
-    }
-    with open('screenSize.json', 'w') as file:
-        json.dump(newObject, file)
+    with open("DB.json", "r") as file:
+        data = json.loads(file.read())
+        settings = data["settings"][0]
 
-def changeImageSize(path: str, monitorSize: list[int]) -> None:
+    newDBobject = {
+        "settings": [settings],
+        "screenSize": [{
+            "width": newSize[0],
+            "height": newSize[1]
+        }]}
+
+    with open('DB.json', 'w') as file:
+        json.dump(newDBobject, file)
+
+def changeImageSize(path: str, monitorSize: list[int], lastUsedSize: list[int]) -> None:
     img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
     imgSize = [img.shape[1], img.shape[0]]
-    mySize = getLastSize()
-
-    print(mySize)
+    mySize = lastUsedSize
 
     targetWidth = int((((monitorSize[0] * 100) // mySize[0]) * 0.01) * imgSize[0])
     targetHeight = int((((monitorSize[1] * 100) // mySize[1]) * 0.01) * imgSize[1])
@@ -58,7 +63,6 @@ def changeImageSize(path: str, monitorSize: list[int]) -> None:
     if imgSize[0] != monitorSize[0]:
         output = cv2.resize(img, (targetWidth, targetHeight))
         cv2.imwrite(path, output)
-        changeLastSize([monitorSize[0], monitorSize[1]])
 
 class MainWindow(QMainWindow):
     title: str = "title"
@@ -241,9 +245,11 @@ if __name__ == "__main__":
         Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_3.png'
     ]
 
-    print(getLastSize())
-    # for i in allImagesPath:
-    #     changeImageSize(i, [screenSize.width(), screenSize.height()])
+    lastUsedSize = getLastSize()
+    if lastUsedSize[0] != screenSize.width():
+        for i in allImagesPath:
+            changeImageSize(i, [screenSize.width(), screenSize.height()], lastUsedSize)
+        changeLastSize([screenSize.width(), screenSize.height()])
 
     IMG_START = cv2.imread(allImagesPath[0])
     IMG_FISH = cv2.imread(allImagesPath[1])
