@@ -1,1 +1,1 @@
-{"settings": [{"rodKey": 6, "mealKey": 9, "potionKey": 8, "useMeal": false, "usePotion": false, "mealTimer": 300, "potionTimer": 300, "timeForTry": 22.5}], "screenSize": [{"width": 1366, "height": 768}]}
+{"settings": [{"rodKey": 0, "mealKey": 9, "potionKey": 8, "useMeal": false, "usePotion": false, "mealTimer": 300, "potionTimer": 300, "timeForTry": 22.5}], "screenSize": [{"width": 1536, "height": 864}]}
