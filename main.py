@@ -187,7 +187,7 @@ class MainWindow(QMainWindow):
                         else: pyautogui.click(button = "left")
 
                 elif self.timeForWait >= self.maxTimeForWait:
-                    if (locate_image(CONNECT_ERR_1, 0.8)) or (locate_image(CONNECT_ERR_2, 0.8)) or (locate_image(CONNECT_ERR_3, 0.8)): self.shouldStopFishing = True
+                    if locate_image(IMG_DISCONNECTED, 0.8): self.shouldStopFishing = True
                     else: self.endTry("timeError")
 
                 elif (self.checkMealTimer >= self.settingsWindow.mealTimer) and (self.settingsWindow.useMeal):
@@ -243,9 +243,7 @@ if __name__ == "__main__":
         Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/treasure.png',
         Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/junk.png',
         Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/sunken.png',
-        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_1.png',
-        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_2.png',
-        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/internetError_3.png'
+        Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}/images/forScript/disconnected.png'
     ]
 
     actualScreenSize = [user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)]
@@ -260,9 +258,7 @@ if __name__ == "__main__":
     IMG_TREASURE = cv2.imread(allImagesPath[2])
     IMG_JUNK = cv2.imread(allImagesPath[3])
     IMG_SUNKEN = cv2.imread(allImagesPath[4])
-    CONNECT_ERR_1 = cv2.imread(allImagesPath[5])
-    CONNECT_ERR_2 = cv2.imread(allImagesPath[6])
-    CONNECT_ERR_3 = cv2.imread(allImagesPath[7])
+    IMG_DISCONNECTED = cv2.imread(allImagesPath[5])
 
     window = MainWindow("Auto fishing")
     window.show()
