@@ -3,14 +3,14 @@ from time import struct_time
 
 from modules.GlobalVariables import CSS, EXIT_ICON
 from modules.SimpleComponents import WindowTitleBar, Button
+from modules.header import MainWindow
 
 class LogsWindow(QtWidgets.QMainWindow):
     logs: list = []
 
-    def __init__(self, parent: QtWidgets.QMainWindow):
-        super().__init__()
+    def __init__(self, parent: MainWindow):
+        QtWidgets.QMainWindow.__init__(self)
 
-        self.parent = parent
         self.title = "AF  |  History"
         self.icon = parent.icon
 
@@ -47,10 +47,10 @@ class LogsWindow(QtWidgets.QMainWindow):
         self.timer.setInterval(500)
         self.timer.start()
 
-    def scrollToBottom(self, min, max) -> None:
+    def scrollToBottom(self, min, max):
         self.__scrollArea.verticalScrollBar().setValue(max)
 
-    def addLog(self, time: struct_time, reasonType: str) -> None:
+    def addLog(self, time: struct_time, reasonType: str):
         objectName = f"btn_{reasonType}_log"
         if reasonType == "fish":
             reason = "Fish caught"
@@ -64,22 +64,19 @@ class LogsWindow(QtWidgets.QMainWindow):
             reason = "Session end"
         elif reasonType == "timeError":
             reason = "Waiting time is up"
-        elif reasonType == "consumeMeal":
-            reason = "Consume meal"
-        elif reasonType == "consumePotion":
-            reason = "Consume potion"
+        elif reasonType == "consume":
+            reason = "Consume something"
 
         btn = Button(self, f"{time.tm_hour:02}:{time.tm_min:02}:{time.tm_sec:02}  |  {reason}", 0, 0, 0, 0, objectName)
         self.__vBox.addWidget(btn)
         self.__scrollArea.setWidget(self.__widget)
 
-    def checkLogs(self) -> None:
+    def checkLogs(self):
         if len(self.logs) != 0:
             self.addLog(self.logs[0][0], self.logs[0][1])
             self.logs.pop(0)
         self.timer.start()
 
-    def deleteLogs(self) -> None:
+    def deleteLogs(self):
         while self.__vBox.itemAt(0):
             self.__vBox.removeWidget(self.__vBox.itemAt(0).widget())
-        self.parent.resetFishCount()

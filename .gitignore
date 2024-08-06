@@ -2,7 +2,7 @@
 __pycache__/
 test/
 build/
-preview/
 
 *.spec
 test_*
+main.py

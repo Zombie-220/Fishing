@@ -5,8 +5,11 @@ app = QtWidgets.QApplication(sys.argv)
 
 APP_ICON = QtGui.QPixmap(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\APP_ICON.png').scaled(
                         30, 30, transformMode = QtCore.Qt.TransformationMode.SmoothTransformation)
+
 SETTING_ICON = QtGui.QIcon(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\SETTING_ICON.png')
+
 EXIT_ICON = QtGui.QIcon(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\EXIT_ICON.png')
+
 LOGS_ICON = QtGui.QIcon(Rf'{os.path.abspath(os.path.dirname(sys.argv[0]))}\images\icons\LOGS_ICON.png')
 
 CSS = '''
@@ -18,21 +21,16 @@ CSS = '''
         background-color: rgba(0,0,0,0);
     }
 
-    #MainWindow, #TitleBar, #Window, QToolTip, #btn_fish_log, QComboBox, QComboBox QAbstractItemView, QComboBox::drop-down {
+    #MainWindow, #TitleBar, #Window, QToolTip, #btn_fish_log {
         background-color: rgb(21, 21, 21);
-        border: 1px solid rgb(145, 145, 145);
-    }
-    QComboBox::drop-down {
-        image: url(./images/icons/DOWN_ARROW.png);
-        width: 20px;
-        height: 20px;
+        border: 1px solid rgb(145, 145, 145)
     }
     QToolTip {
         font-size: 12px;
     }
 
     
-    #btn_standart {
+    #btn_standart, #btn_consume_log {
         background-color: rgba(0, 65, 129, 1);
         border: 1px solid rgb(145, 145, 145);
     }
@@ -98,9 +96,5 @@ CSS = '''
     #btn_timeError_log {
         background-color: rgb(41, 9, 41);
         border: 1px solid rgb(127, 0, 127);
-    }
-    #btn_consumeMeal_log, #btn_consumePotion_log {
-        background-color: rgba(0, 65, 129, 0.3);
-        border: 1px solid rgb(145, 145, 145);
     }
 '''
