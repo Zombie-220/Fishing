@@ -19,15 +19,13 @@ from modules.LogsWindow import LogsWindow
 # while I was writing the program I spent 10 days and caught only two sunken treasures (i caught 5000+ fish)
 # but i got Expert Angler title, hah
 
-def locate_image(img, threshold: float):
+def locateImage(img, threshold: float):
     screenshot = pyautogui.screenshot()
     screenshot = numpy.array(screenshot)
     screenshot = cv2.cvtColor(screenshot, cv2.COLOR_RGB2BGR)
-
     image = numpy.uint8(img)
     result = cv2.matchTemplate(screenshot, image, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-
     if max_val >= threshold:
         return (max_loc[0], max_loc[1])
     return None
@@ -42,27 +40,24 @@ def changeLastSize(newSize: list[int]) -> None:
     with open("DB.json", "r") as file:
         data = json.loads(file.read())
         settings = data["settings"][0]
-
     newDBobject = {
         "settings": [settings],
         "screenSize": [{
             "width": newSize[0],
             "height": newSize[1]
         }]}
-
     with open('DB.json', 'w') as file:
         json.dump(newDBobject, file)
 
 def changeImageSize(path: str, monitorSize: list[int], lastUsedSize: list[int]) -> None:
     img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
-    imgSize = [img.shape[1], img.shape[0]]
-    mySize = lastUsedSize
-
-    targetWidth = int((((monitorSize[0] * 100) // mySize[0]) * 0.01) * imgSize[0])
-    targetHeight = int((((monitorSize[1] * 100) // mySize[1]) * 0.01) * imgSize[1])
-
-    output = cv2.resize(img, (targetWidth, targetHeight))
-    cv2.imwrite(path, output)
+    imgW = img.shape[1]
+    imgH = img.shape[0]
+    ratioW = monitorSize[0] * 100 / lastUsedSize[0] * 0.01
+    ratioH = monitorSize[1] * 100 / lastUsedSize[1] * 0.01
+    targetSize = (int(ratioW*imgW)+4, int(ratioH*imgH)+1)
+    outIMG = cv2.resize(img, targetSize, cv2.INTER_LINEAR)
+    cv2.imwrite(path, outIMG)
 
 class MainWindow(QMainWindow):
     title: str = "title"
@@ -163,21 +158,21 @@ class MainWindow(QMainWindow):
                 self.timeForWait = time.time() - self.startFishingTimer
                 self.checkMealTimer = time.time() - self.startCheckMealTimer
                 self.checkPotionTimer = time.time() - self.startCheckPotionTimer
-                if locate_image(IMG_START, 0.7):
+                if locateImage(IMG_START, 0.7):
                     self.tryCatchFish = True
                     self.startThisTry = time.time()
                     while self.tryCatchFish:
                         pyautogui.click(button = "left")
                         timeForThisTry = time.time() - self.startThisTry
-                        if (locate_image(IMG_FISH, 0.8) or locate_image(IMG_JUNK, 0.8)) and (timeForThisTry <= self.settingsWindow.timeForTry):
+                        if (locateImage(IMG_FISH, 0.8) or locateImage(IMG_JUNK, 0.8)) and (timeForThisTry <= self.settingsWindow.timeForTry):
                             self.endTry("fish")
                             self.addFishCount()
                         else: pyautogui.click(button = "left")
-                        if locate_image(IMG_TREASURE, 0.8) and (timeForThisTry <= self.settingsWindow.timeForTry) and self.tryCatchFish:
+                        if locateImage(IMG_TREASURE, 0.7) and (timeForThisTry <= self.settingsWindow.timeForTry) and self.tryCatchFish:
                             self.endTry("treasure")
                             self.addFishCount()
                         else: pyautogui.click(button = "left")
-                        if locate_image(IMG_SUNKEN, 0.8) and (timeForThisTry <= self.settingsWindow.timeForTry) and self.tryCatchFish:
+                        if locateImage(IMG_SUNKEN, 0.8) and (timeForThisTry <= self.settingsWindow.timeForTry) and self.tryCatchFish:
                             self.endTry("sunken")
                             self.addFishCount()
                         else: pyautogui.click(button = "left")
@@ -187,7 +182,7 @@ class MainWindow(QMainWindow):
                         else: pyautogui.click(button = "left")
 
                 elif self.timeForWait >= self.maxTimeForWait:
-                    if locate_image(IMG_DISCONNECTED, 0.8): self.shouldStopFishing = True
+                    if locateImage(IMG_DISCONNECTED, 0.8): self.shouldStopFishing = True
                     else: self.endTry("timeError")
 
                 elif (self.checkMealTimer >= self.settingsWindow.mealTimer) and (self.settingsWindow.useMeal):
