@@ -14,7 +14,7 @@ ___installation using git___
 ```sh
 git clone https://github.com/Zombie-220/Fishing.git
 cd Fishing/dist
-main.exe
+"auto fishing.exe"
 ```
 ___or download zip file from [releases](https://github.com/Zombie-220/Fishing/releases)___ 
 
