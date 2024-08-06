@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "run main",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "consoleName": "main"
+        },
+        {
+            "name": "run test",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "program": "test_main.py",
+            "console": "integratedTerminal",
+            "consoleName": "test"
+        }
+    ]
+}
