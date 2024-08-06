@@ -1,7 +1,8 @@
 ## Introduction
 The application is designed for automatic fishing in Roblox Arcane Odyssey v1.15.13 and later.  
 Relevance may disappear with the update of fishing mechanics.  
-I am writing this project primarily for myself, so support will not be regular.
+I am writing this project primarily for myself, so support will not be regular.  
+The app is developed for Windows 10 OS, it may run on other versions of WIndows.
 
 ## What does this application do
 ~~Helps to spend the saved time on other useless activities~~  
