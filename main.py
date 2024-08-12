@@ -196,10 +196,11 @@ class MainWindow(QMainWindow):
                     self.startCheckMealTimer = time.time()
                 elif (self.checkPotionTimer >= self.settingsWindow.potionTimer) and (self.settingsWindow.usePotion):
                     keyboard.press_and_release(f"{self.settingsWindow.potionKey}")
-                    pyautogui.click(button = "left")
-                    time.sleep(0.75)
-                    keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
-                    pyautogui.click(button = "left")
+                    if self.settingsWindow.rodKey != "e": 
+                        pyautogui.click(button = "left")
+                        time.sleep(0.75)
+                        keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
+                        pyautogui.click(button = "left")
                     self.logsWindow.logs.append([time.localtime(), "consumePotion"])
                     self.startFishingTimer = time.time()
                     self.startCheckPotionTimer = time.time()
