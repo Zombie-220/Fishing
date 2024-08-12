@@ -196,7 +196,7 @@ class MainWindow(QMainWindow):
                     self.startCheckMealTimer = time.time()
                 elif (self.checkPotionTimer >= self.settingsWindow.potionTimer) and (self.settingsWindow.usePotion):
                     keyboard.press_and_release(f"{self.settingsWindow.potionKey}")
-                    if self.settingsWindow.rodKey != "e": 
+                    if self.settingsWindow.potionKey != "e":
                         pyautogui.click(button = "left")
                         time.sleep(0.75)
                         keyboard.press_and_release(f"{self.settingsWindow.rodKey}")
