@@ -29,6 +29,8 @@ ___or download zip file from [releases](https://github.com/Zombie-220/Fishing/re
 
 **Video guide** [here](https://youtu.be/dakH4vISFCI)
 
+__Attention__: after installation, it is recommended to check the functionality of the app. If fish are not caught, you need to change the images in dist/images
+
 ## Application components
 - Main window
 - Settings window (saves all changes to a local database)
